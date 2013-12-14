@@ -29,9 +29,8 @@ h1,h2,h3,h4,h5,h6 {
 #main-container {
     background:#FFF;
     background:rgba(255,255,255,0.8);
-    box-shadow:0 0 10px #222;
+    box-shadow:0 0 30px #222;
     padding:20px;
-    margin-top:20px;
 }
 
 #main-canvas-wrapper {
@@ -41,7 +40,21 @@ h1,h2,h3,h4,h5,h6 {
 #main-canvas-wrapper canvas {
     height:600px;
     width:800px;
-    border:2px solid rgba(0,0,0,0.6);
-    margin-bottom: 18px;
-    background:#000;
+    border:4px solid rgba(0,0,0,0.6);
+    margin-bottom: 16px;
+}
+
+#stats {
+    text-align:center;
+}
+
+#stats > div#stats {
+    display:inline-block;
+    margin-right:10px;
+}
+
+#footer {
+    padding:10px 0;
+    text-align:center;
+    color:#888;
 }
