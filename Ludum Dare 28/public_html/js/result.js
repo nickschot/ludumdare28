@@ -9,3 +9,18 @@ var Result = new Class({
     initialize: function() {
     }  
 });
+
+var ResultBounce = new Class({
+    Extends: Result,
+    initialize: function(objects) {
+        this.parent();
+        this.objects = objects;
+    }  
+});
+
+var ResultNothing = new Class({
+    Extends: Result,
+    initialize: function() {
+        this.parent();
+    }  
+});

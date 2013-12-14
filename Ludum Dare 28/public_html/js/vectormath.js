@@ -4,6 +4,29 @@
  * and open the template in the editor.
  */
 
+var Circle = new Class({
+   initialize: function(p, radius) {
+       this.p = p;
+       this.radius;
+   }, 
+   
+   doesPlaneIntersect: function() {
+       
+       //plane inside circle
+       
+       //circle inside plane
+       
+       
+   },
+   
+   doesVectorIntersect: function() {
+     
+       //vector inside circle
+       
+       //part of vector intersects
+   }
+});
+
 var Plane = new Class({
    initialize: function(p1, p2, p3, p4) {
        this.p1 = p1; 

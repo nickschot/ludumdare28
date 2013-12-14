@@ -14,7 +14,15 @@ var Object = new Class({
         this.isWalkable = isWalkable;
     },
     
-    inObject: function(x, y) {
-        return (x > this.x && x < (this.x + this.width) && y > this.y && (this.y + this.height));
+    inObject: function(rect2) {
+        var rect = this.toPlane();
+        return rect.planeInPlane(rect2);
+    },
+    
+    toPlane: function() {
+        return new Plane (new Point(this.x, this.y), 
+                              new Point(this.x + this.width, this.y), 
+                              new Point(this.x + this.width, this.y + this.height), 
+                              new Point(this.x, this.y + this.height));
     }
 });
