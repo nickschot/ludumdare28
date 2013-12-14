@@ -33,18 +33,29 @@ var InitState = new Class({
         this.parent(stateManager);
         this.count = 0;
 
-        this.ballTexture = new PIXI.Texture.fromImage("img/game/rondje.png");
-        this.stage = new PIXI.Stage(0xFFFFFF);
-        this.circle = new PIXI.Sprite(this.ballTexture);
-        console.log(this.circle);
-        this.stage.addChild(this.circle);
+        this.scene = new THREE.Scene();
+        // TODO: doe hier eens niet 800 bij 600
+        this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
+        this.camera.position.set(0, 0, -22.5);
+        this.camera.lookAt(this.scene.position);
+        this.scene.add(this.camera);
+
+        this.spriteSheet = new SpriteSheet("img/game/spritesheet.png", 8, 8);
+
+        console.log(THREE.FrontSide);
+
+        this.planeMaterial = new THREE.MeshBasicMaterial({ map:this.spriteSheet.getTexture(), side: THREE.DoubleSide, transparent: true});
+
+        this.planeGeo = this.spriteSheet.getGeometryFromSpriteIndex(7, 7, 1, 1);
+
+        this.plane = new THREE.Mesh(this.planeGeo, this.planeMaterial);
+
+        this.scene.add(this.plane);
     },
     render: function(renderer) {
-        renderer.render(this.stage);
+        renderer.render(this.scene, this.camera);
     },
     update: function() {
-        this.circle.x = 12;
-        this.count++;
     }
 });
 
