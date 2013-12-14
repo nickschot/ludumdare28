@@ -17,8 +17,9 @@ if __name__ == "__main__":
     chunkX, chunkY = (int(math.ceil(width / 25)), int(math.ceil(height / 19)))
 
     chunks = []
-    for i in range(chunkX):
-        for j in range(chunkY):
+    for j in range(chunkY):
+        currentArray = []
+        for i in range(chunkX):
             xMin = i * 25
             xMax = (i+1) * 25
             yMin = j * 19
@@ -36,9 +37,9 @@ if __name__ == "__main__":
                         inner_arr.append(0)
                 arr.append(inner_arr)
             
-            data = {"tiles": arr, "chunkX": i, "chunkY": j}
+            currentArray.append(arr)
 
-            chunks.append(data)
+        chunks.append(currentArray)
 
     f = open(sys.argv[2], 'w+')
     f.write(json.dumps(chunks))
