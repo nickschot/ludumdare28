@@ -36,7 +36,7 @@ var InitState = new Class({
 
         this.camera = new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
 
-        this.camera.position.set(0, 0, -12.75);
+        this.camera.position.set(0, 0, 12.75);
 
         this.camera.lookAt(this.scene.position);
 
@@ -54,9 +54,15 @@ var InitState = new Class({
 
         var self = this;
 
-        var jsonRequest = new Request.JSON({url: 'level/overworld.json', onSucces: function(level) {
-            self.switchTo(new GameState(self.stateManager, level));
-        }});
+        var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
+            onSucces: function(level, text) {
+                console.log("HOOOOOOI");
+                self.switchTo(new GameState(self.stateManager, level));
+            }, 
+            onFailure: function(xhr) { 
+                console.log(xhr);
+            }
+        }).get();
     },
 
     render: function(renderer) {
@@ -64,7 +70,7 @@ var InitState = new Class({
     },
 
     update: function() {
-        this.mesh.rotation.z += 0.2;
+        this.mesh.rotation.z -= 0.3;
     }
 });
 
