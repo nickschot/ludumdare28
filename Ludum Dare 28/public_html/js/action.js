@@ -13,7 +13,7 @@ var Action = new Class({
 
 var ActionAttack = new Class({
     Extends: Action,
-    initialize: function(x, y, height, width, range, chunk ) {
+    initialize: function(x, y, range, chunk ) {
         this.parent(chunk);
         this.isAttack = true;
         this.x = x;
@@ -22,8 +22,12 @@ var ActionAttack = new Class({
     },  
     
     inRange: function(rect) {
-        return (x > this.x && x < (this.x + width) && y > this.y && y < (this.y + height));
+        return this.toCircle().doesPlaneIntersect(rect);
     },
+    
+    toCircle: function() {
+        return new Circle(new Point(this.x, this.y), this.range);
+    }
 });
 
 //x and y are the coördinates of the potential attack

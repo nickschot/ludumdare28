@@ -10,20 +10,26 @@ var Circle = new Class({
        this.radius;
    }, 
    
-   doesPlaneIntersect: function() {
+   doesPlaneIntersect: function(plane) {
+       var vectors = plane.planeToVectors();
+       var result = false;
        
-       //plane inside circle
+       for(var i = 0; i < vectors.length; i++) {
+           if(this.doesVectorIntersect(vectors[i])) {
+               result = true;
+           }
+       }
        
-       //circle inside plane
-       
-       
+       return result;
    },
    
-   doesVectorIntersect: function() {
-     
-       //vector inside circle
+   doesVectorIntersect: function(v) {
+       var perpenv = v.perpendicularVector();
+       perpenv.px = this.p.x;
+       perpenv.py = this.p.y;
        
-       //part of vector intersects
+       intersectPoint = perpenv.vectorIntersectionPoint(v);
+       return intersectPoint.lengthBetweenPoint(this.p) <= this.radius;
    }
 });
 
@@ -35,7 +41,7 @@ var Plane = new Class({
        this.p4 = p4; 
    },
    
-   pointInPlane: function(p) {
+   doesPointLieInPlane: function(p) {
        /* When a point p lies in a plane then:
         * Take a cornerpoint cp from the plane
         * Take the vector vp,cp between point p and cornerpoint cp 
@@ -59,13 +65,24 @@ var Plane = new Class({
         if(r1.p1.equals(r2.p1) && r1.p2.equals(r2.p2) && r1.p3.equals(r2.p3) && r1.p4.equals(r2.p4)) {
             //plane1 is plane2
             result = true;
-        } else if(r1.pointInPlane(r2.p1) || r1.pointInPlane(r2.p2) || r1.pointInPlane(r2.p3) || r1.pointInPlane(r2.p4)) {
+        } else if(r1.doesPointLieInPlane(r2.p1) || r1.doesPointLieInPlane(r2.p2) || r1.doesPointLieInPlane(r2.p3) || r1.doesPointLieInPlane(r2.p4)) {
             //1 or more points of plane2 are in plane1
             result = true;
-        } else if(r2.pointInPlane(r1.p1) || r2.pointInPlane(r1.p2) || r2.pointInPlane(r1.p3) || r2.pointInPlane(r1.p4)) {
+        } else if(r2.doesPointLieInPlane(r1.p1) || r2.doesPointLieInPlane(r1.p2) || r2.doesPointLieInPlane(r1.p3) || r2.doesPointLieInPlane(r1.p4)) {
             //1 or more points of plane2 are in plane1
             result = true;
         }
+        return result;
+    },
+    
+    //Returns the vectors between the points of a plane in a list
+    //Goes from point 1 to point 2 to point 3 to point 4 to point 1
+    planeToVectors: function (r) {
+        var result = new Array();
+        result.push(vectorBetweenPoints(r.p1, r.p2));
+        result.push(vectorBetweenPoints(r.p2, r.p3));
+        result.push(vectorBetweenPoints(r.p3, r.p4));
+        result.push(vectorBetweenPoints(r.p4, r.p1));
         return result;
     }
 });
@@ -88,6 +105,15 @@ var Vector = new Class({
     //@requires v1.px == v2.px && v1.py == v2.py
     vectorMin: function (v2) {
         return new Vector(this.dx - v2.dx, this.dy - v2.dy, this.px, this.py);
+    },
+   
+    //Calculates the vector direction for which dot product == 0
+    //Uses same step on point
+    perpendicularVector: function () {
+        var dx = -this.dy;
+        var dy = this.dx;
+     
+       return new Vector(dx, dy, this.px, this.py);
     },
    
    isOppositeDirection: function(v) {
@@ -157,25 +183,9 @@ var Point = new Class({
     //Calculates difference between 2 points as a direction and uses p1 as starting point
     vectorBetweenPoint: function vectorBetweenPoint(p2) {
         return new Vector(p2.x - this.x, p2.y - this.y, this.x, p2.x);
+    },
+    
+    lengthBetweenPoint: function(p2) {
+        return Math.sqrt((p2.x - this.x)^2 + (p2.y - this.y)^2);
     }
-})
-
-
-
-
-/*
- * NOTNEEDED
-//Returns the vectors between the points of a plane in a list
-//Goes from point 1 to point 2 to point 3 to point 4 to point 1
-function _planeToVectors(r) {
-    var result = new Array();
-    result.push(vectorBetweenPoints(r.p1, r.p2));
-    result.push(vectorBetweenPoints(r.p2, r.p3));
-    result.push(vectorBetweenPoints(r.p3, r.p4));
-    result.push(vectorBetweenPoints(r.p4, r.p1));
-    return result;
-}
-*/
-
-
-
+});
