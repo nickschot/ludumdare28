@@ -26,23 +26,36 @@ var Main = new Class({
         this.updateStats.setMode(0);
         this.frameStats = new Stats();
         this.frameStats.setMode(0);
+        
+        this.width = 800;
+        this.height = 600;
+
         $('stats-wrapper').adopt(this.updateStats.domElement, this.frameStats.domElement);
 
-        //PIXI shizzle
-        this.renderer = new PIXI.autoDetectRenderer(800, 600);
-        $('main-canvas-wrapper').adopt(this.renderer.view);
+        //Tree.js shizzle
+        this.renderer = this._getRenderer();
+        $('main-canvas-wrapper').adopt(this.renderer.domElement);
+        
+        this.renderer.setSize(this.width, this.height);
 
         this.stateManager = new StateManager(this.renderer);
 
-        this.update();
         var self = this;
-        requestAnimationFrame(function () {self.render();});
+        requestAnimationFrame(function () {self.update(); self.render();});
+    },
+
+    _getRenderer: function() {
+        return new THREE.WebGLRenderer({antialias:true});
     },
 
     render: function() {
         this.frameStats.begin();
         this.stateManager.render();
         this.frameStats.end();
+
+
+        var self = this;
+        requestAnimationFrame(function () { self.render(); } );
     },
     
     update: function() {
