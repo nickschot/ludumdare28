@@ -31,37 +31,74 @@ var InitState = new Class({
     Extends: State,
     initialize: function (stateManager) {
         this.parent(stateManager);
-        this.count = 0;
 
         this.scene = new THREE.Scene();
-        // TODO: doe hier eens niet 800 bij 600
-        this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
-        this.camera.position.set(0, 0, -22.5);
+
+        this.camera = new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
+
+        this.camera.position.set(0, 0, 12.75);
+
         this.camera.lookAt(this.scene.position);
+
         this.scene.add(this.camera);
 
-        this.spriteSheet = new SpriteSheet("img/game/spritesheet.png", 8, 8);
+        this.sprite = new THREE.ImageUtils.loadTexture('img/game/ui/loading.png');
 
-        console.log(THREE.FrontSide);
+        this.material = new THREE.MeshBasicMaterial({ map:this.sprite, side: THREE.DoubleSide, transparent: true});
+        
+        this.planeGeo = new THREE.PlaneGeometry(1, 1);
 
-        this.planeMaterial = new THREE.MeshBasicMaterial({ map:this.spriteSheet.getTexture(), side: THREE.DoubleSide, transparent: true});
+        this.mesh = new THREE.Mesh(this.planeGeo, this.material);
 
-        this.planeGeo = this.spriteSheet.getGeometryFromSpriteIndex(7, 7, 1, 1);
+        this.scene.add(this.mesh);
 
-        this.plane = new THREE.Mesh(this.planeGeo, this.planeMaterial);
+        var self = this;
 
-        this.scene.add(this.plane);
+        var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
+            onSucces: function(level, text) {
+                console.log("HOOOOOOI");
+                self.switchTo(new GameState(self.stateManager, level));
+            }, 
+            onFailure: function(xhr) { 
+                console.log(xhr);
+            }
+        }).get();
     },
+
     render: function(renderer) {
         renderer.render(this.scene, this.camera);
     },
+
     update: function() {
+        this.mesh.rotation.z -= 0.3;
     }
 });
 
 var GameState = new Class({
-    Implements: State,
-    render: function() {
+    Extends: State,
+    initialize: function (stateManager, level) {
+        this.parent(stateManager);
+        this.count = 0;
+        this.chunksOnscene = {};
+
+        var self = this;
+
+//        var jsonRequest = new Request.JSON({url: 'level/overworld.json', onSucces: function(level) {
+//            self.chunkManager = new ChunkManager(level);            
+//
+//            self.scene = new THREE.Scene();
+//            // TODO: doe hier eens niet 800 bij 600
+//            self.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
+//            self.camera.position.set(0, 0, -22.5);
+//            self.camera.lookAt(self.scene.position);
+//            self.scene.add(self.camera);
+//
+//            var chunks = chunkManager.renderChunk();
+//
+//         }}).get();
+    },
+    render: function(renderer) {
+        renderer.render(this.scene, this.camera);
     },
     update: function() {
     }
