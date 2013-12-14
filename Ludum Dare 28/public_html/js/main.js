@@ -19,21 +19,22 @@ window.addEvents({
 var Main = new Class({
     initialize: function(){
         this.nextTime = (new Date).getTime();
-        this.stateManager = new StateManager(this); //TODO: actually make a stateManager
         this.ticks = 30;
 
-        //PIXI shizzle
-        //this.stage = new PIXI.Stage(0x66FF99);
-        //this.renderer = new PIXI.autoDetectRenderer(800, 600);
-
-        ////Stats
+        //Stats
         this.updateStats = new Stats();
         this.updateStats.setMode(0);
         this.frameStats = new Stats();
         this.frameStats.setMode(0);
         $('stats').adopt(this.updateStats.domElement, this.frameStats.domElement);
-        this.update();
 
+        //PIXI shizzle
+        this.renderer = new PIXI.autoDetectRenderer(800, 600);
+        $('main-canvas-wrapper').adopt(this.renderer.view);
+
+        this.stateManager = new StateManager(this.renderer);
+
+        this.update();
         var self = this;
         requestAnimationFrame(function () {self.render();});
     },

@@ -10,48 +10,39 @@
         <!-- libraries -->
         <script type="text/javascript" src="js/libs/mootools/mootools-core-full-nocompat-yc.min.js"></script>
         <script type="text/javascript" src="js/libs/mootools-more/mootools-more-yui-compressed.min.js"></script>
-        <script type="text/javascript" src="js/libs/stats/stats.min.js"></script>
         <script type="text/javascript" src="js/libs/pixi/pixi.js"></script>
         
-        <!-- main scripts -->
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/statemanager.js"></script>
-        
-        <script type="text/javascript" src="js/entity.js"></script>
-        <script type="text/javascript" src="js/tile.js"></script>
-        <script type="text/javascript" src="js/tiletypes.js"></script>
-        <script type="text/javascript" src="js/supportfunctions.js"></script> 
+        <script>
+            var main = function() {
+                var stage = new PIXI.Stage(0xABCDEF);
+
+                var renderer = PIXI.autoDetectRenderer(400, 300);
+                document.body.appendChild(renderer.view);
+
+                var ballTexture = new PIXI.Texture.fromImage("img/game/rondje.png");
+
+                var circle = new PIXI.Sprite(ballTexture);
+
+                circle.anchor.x = 0.5;
+                circle.anchor.y = 0.5;
+                circle.position.x = 200;
+                circle.position.y = 150;
+
+                stage.addChild(circle);
+
+                function gameLoop() {
+                    requestAnimFrame(gameLoop);
+                    renderer.render(stage);
+                    //console.log("hoi");
+                }
+
+                requestAnimFrame(gameLoop);
+                
+            }
+        </script>
         
     </head>
-    <body>
-        <script>
-    var list = new Array({"num":3},{"num":4},{"num":5},{"num":6});
-          
-       
-            var h = insertSorted(list, {"num":2}, "num");
-            console.log(h);
-           
-            
-            var z = insertSorted(list, {"num":3}, "num");
-                console.log(z);
+    <body onload="main();">
 
-            
-            var j = insertSorted(list, {"num":4}, "num");
-                console.log(j);
-            
-            
-            var k = insertSorted(list, {"num":5}, "num");
-
-                console.log(k);
-
-            var l = insertSorted(list, {"num":6}, "num");
-
-                console.log(l);
-            
-            var m = insertSorted(list, {"num":7}, "num");
-                console.log(m);
-
-           
-        </script>
     </body>
 </html>

@@ -1,6 +1,6 @@
 var StateManager = new Class({
-    initialize: function(main) {
-        this.main = main;
+    initialize: function(renderer) {
+        this.renderer = renderer;
         this.currentState = new InitState();
     },
 
@@ -9,7 +9,7 @@ var StateManager = new Class({
     },
 
     render: function() {
-        this.currentState.update();
+        this.currentState.render(this.renderer);
     },
 
     switchTo: function(state) {
@@ -32,11 +32,18 @@ var InitState = new Class({
     initialize: function (stateManager) {
         this.parent(stateManager);
         this.count = 0;
-    },
-    render: function() {
 
+        this.ballTexture = new PIXI.Texture.fromImage("img/game/rondje.png");
+        this.stage = new PIXI.Stage(0xFFFFFF);
+        this.circle = new PIXI.Sprite(this.ballTexture);
+        console.log(this.circle);
+        this.stage.addChild(this.circle);
+    },
+    render: function(renderer) {
+        renderer.render(this.stage);
     },
     update: function() {
+        this.circle.x = 12;
         this.count++;
     }
 });
