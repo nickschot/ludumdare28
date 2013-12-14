@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Ludum Dare 28</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
+        
+        <link rel="stylesheet" href="css/main.css">
+        
+        <!-- libraries -->
+        <script type="text/javascript" src="js/libs/mootools/mootools-core-full-nocompat-yc.min.js"></script>
+        <script type="text/javascript" src="js/libs/mootools-more/mootools-more-yui-compressed.min.js"></script>
+        <script type="text/javascript" src="js/libs/stats/stats.min.js"></script>
+        <script type="text/javascript" src="js/libs/pixi/pixi.js"></script>
+        
+        <!-- main scripts -->
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/statemanager.js"></script>
+        
+        <script type="text/javascript" src="js/entity.js"></script>
+        <script type="text/javascript" src="js/tile.js"></script>
+        <script type="text/javascript" src="js/tiletypes.js"></script>
+        
     </head>
     <body>
-        <div>TODO write content</div>
+        <div id="main-container" class="container">
+            <div id="head" class="span-24">
+                <div id="head-title" class="span-24"><h1>Dragons & Wizards</h1></div>
+                <div id="head-subtitle" class="span-24"><h3>but just one of each</h3></div>
+            </div>
+            <div id="main-canvas-wrapper" class="span-24">
+                <canvas></canvas>
+            </div>
+            <div id="stats" class="span-24">
+                
+            </div>
+        </div>
     </body>
 </html>
