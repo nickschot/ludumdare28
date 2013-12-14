@@ -15,6 +15,17 @@ h1,h2,h3,h4,h5,h6 {
 	color:#444;
 }
 
+#head {
+    text-align:center;
+}
+
+#head-title h1 {
+    margin-bottom:5px;
+}
+
+#head-subtitle {
+}
+
 #main-container {
     background:#FFF;
     background:rgba(255,255,255,0.8);
