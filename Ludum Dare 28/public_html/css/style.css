@@ -1,3 +1,10 @@
+@font-face
+{
+font-family: anglicanFont;
+src: url('../fonts/AnglicanText.ttf'),
+     url('../fonts/AnglicanText.eot'); /* IE9 */
+} 
+
 html {
 }
 
@@ -21,9 +28,13 @@ h1,h2,h3,h4,h5,h6 {
 
 #head-title h1 {
     margin-bottom:5px;
+    font-family: "anglicanFont",Arial,"sans-serif";
+    font-size:75px;
 }
 
-#head-subtitle {
+#head-subtitle h3 {
+    font-family: "anglicanFont",Arial,"sans-serif";
+    font-size:40px;
 }
 
 #main-container {
@@ -44,11 +55,14 @@ h1,h2,h3,h4,h5,h6 {
     margin-bottom: 16px;
 }
 
-#stats {
+#stats-wrapper {
     text-align:center;
+    position:fixed;
+    left:20px;
+    bottom:20px;
 }
 
-#stats > div#stats {
+#stats-wrapper > div#stats {
     display:inline-block;
     margin-right:10px;
 }

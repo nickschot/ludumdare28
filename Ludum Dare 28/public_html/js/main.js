@@ -26,7 +26,7 @@ var Main = new Class({
         this.updateStats.setMode(0);
         this.frameStats = new Stats();
         this.frameStats.setMode(0);
-        $('stats').adopt(this.updateStats.domElement, this.frameStats.domElement);
+        $('stats-wrapper').adopt(this.updateStats.domElement, this.frameStats.domElement);
 
         //PIXI shizzle
         this.renderer = new PIXI.autoDetectRenderer(800, 600);
