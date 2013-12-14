@@ -1,3 +1,7 @@
+/**
+ * Singleton class that manages all chunks
+ * @type Class
+ */
 var ChunkManager = new Class({
     /**
      * @param chunks - An array containing all chunks
@@ -27,13 +31,17 @@ var ChunkManager = new Class({
             var tiles = new Array();
             for(var i = 0; i < this.getChunkHeight(); i++){
                 for(var j = 0; j < this.getChunkWidth(); j++){
-                    tiles[i][j] = this._getTileType(this.chunks[y][x]);
+                    tiles[i][j] = _createGeometry(this._getTileType(this.chunks[y][x]));
                 }
             }
-            return tiles;
+            return new Chunk(tiles);
         } else {
             return false;
         }
+    },
+    
+    _createGeometry: function(tileType){
+        
     },
     
     _getTileType: function(color){
