@@ -18,23 +18,24 @@ window.addEvents({
 
 var Main = new Class({
     initialize: function(){
-        this.nextTime = 0;
-        this.stateManager = undefined; //TODO: actually make a stateManager
+        this.nextTime = (new Date).getTime();
+        this.stateManager = new StateManager(this); //TODO: actually make a stateManager
         this.ticks = 30;
-        this.next_time = undefined;
 
         //PIXI shizzle
-        this.stage = new PIXI.Stage(0x66FF99);
-        this.renderer = new PIXI.autoDetectRenderer(800, 600);
+        //this.stage = new PIXI.Stage(0x66FF99);
+        //this.renderer = new PIXI.autoDetectRenderer(800, 600);
 
-        //Stats
+        ////Stats
         this.updateStats = new Stats();
+        this.updateStats.setMode(0);
         this.frameStats = new Stats();
-
-        this.update();
-        requestAnimationFrame(render);
-        
+        this.frameStats.setMode(0);
         $('stats').adopt(this.updateStats.domElement, this.frameStats.domElement);
+        this.update();
+
+        var self = this;
+        requestAnimationFrame(function () {self.render();});
     },
 
     render: function() {
@@ -46,17 +47,22 @@ var Main = new Class({
     update: function() {
         this.updateStats.begin();
         // Burn some cycles till the next update is requested
-        while((new Date).getTime() < this.next_time){}
+        while((new Date).getTime() < this.nextTime){
+            
+        }
+        
         // first ask the time
         var time = (new Date).getTime();
         // then update 
-        this.stateManager.update();    
+        this.stateManager.update();
+        
         // then set next_time and call ourself with interval
-        this.next_time = time + (1000 / this.ticks);
+        this.nextTime = time + Math.floor(1000 / this.ticks);
         // update our stats
         this.updateStats.end();
         // then callback ourself with some marge, in this case 10ms
         var self = this;
-        window.setTimeout(self.update(), ((this.next_time - time) - 5));
+
+        window.setTimeout(function() { self.update(); }, (Math.floor(1000 / this.ticks) - 5));
     }
 });

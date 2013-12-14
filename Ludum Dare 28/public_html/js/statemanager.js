@@ -1,5 +1,6 @@
 var StateManager = new Class({
-    initialize: function() {
+    initialize: function(main) {
+        this.main = main;
         this.currentState = new InitState();
     },
 
@@ -17,7 +18,7 @@ var StateManager = new Class({
 });
 
 var State = new Class({
-    ìnitialize: function (stateManager) {
+    initialize: function (stateManager) {
         this.stateManager = stateManager;
     },
     update:     function () {},
@@ -27,7 +28,7 @@ var State = new Class({
 });
 
 var InitState = new Class({
-    Implements: State,
+    Extends: State,
     initialize: function (stateManager) {
         this.parent(stateManager);
         this.count = 0;
