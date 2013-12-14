@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ludum Dare 28</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        
+        <link rel="stylesheet" href="css/main.css">
+        
+        <!-- libraries -->
+        <script type="text/javascript" src="js/libs/mootools/mootools-core-full-nocompat-yc.min.js"></script>
+        <script type="text/javascript" src="js/libs/mootools-more/mootools-more-yui-compressed.min.js"></script>
+        <script type="text/javascript" src="js/libs/pixi/pixi.js"></script>
+        
+        <script>
+            var main = function() {
+                var stage = new PIXI.Stage(0xABCDEF);
+
+                var renderer = PIXI.autoDetectRenderer(400, 300);
+                document.body.appendChild(renderer.view);
+
+                var ballTexture = new PIXI.Texture.fromImage("img/game/rondje.png");
+
+                var circle = new PIXI.Sprite(ballTexture);
+
+                circle.anchor.x = 0.5;
+                circle.anchor.y = 0.5;
+                circle.position.x = 200;
+                circle.position.y = 150;
+
+                stage.addChild(circle);
+
+                function gameLoop() {
+                    requestAnimFrame(gameLoop);
+                    renderer.render(stage);
+                    //console.log("hoi");
+                }
+
+                requestAnimFrame(gameLoop);
+                
+            }
+        </script>
+        
+    </head>
+    <body onload="main();">
+
+    </body>
+</html>
