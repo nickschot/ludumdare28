@@ -7,6 +7,10 @@ body{
     font-size: 88%;
     overflow-y:scroll;
     background:#EEE;
+    background:url('../img/site/papyrus.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -15,10 +19,13 @@ h1,h2,h3,h4,h5,h6 {
 	color:#444;
 }
 
-.container {
+#main-container {
     background:#FFF;
+    background:rgba(255,255,255,0.8);
     box-shadow:0 0 10px #222;
-    padding:0 20px;
+    padding:20px;
+    border-radius:20px;
+    margin-top:20px;
 }
 
 #main-canvas-wrapper {
@@ -30,4 +37,5 @@ h1,h2,h3,h4,h5,h6 {
     width:800px;
     border:2px solid rgba(0,0,0,0.6);
     margin-bottom: 18px;
+    background:#000;
 }
