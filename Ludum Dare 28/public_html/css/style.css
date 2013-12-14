@@ -1,0 +1,33 @@
+html {
+}
+
+body{
+	color: #000000;
+    font-family: "Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,"sans-serif";
+    font-size: 88%;
+    overflow-y:scroll;
+    background:#EEE;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-family: "Segoe UI Web Light","Segoe UI Light","Segoe UI Web Regular","Segoe UI","Segoe UI Symbol","Helvetica Neue",Arial;
+	font-weight:lighter;
+	color:#444;
+}
+
+.container {
+    background:#FFF;
+    box-shadow:0 0 10px #222;
+    padding:0 20px;
+}
+
+#main-canvas-wrapper {
+    text-align:center;
+}
+
+#main-canvas-wrapper canvas {
+    height:600px;
+    width:800px;
+    border:2px solid rgba(0,0,0,0.6);
+    margin-bottom: 18px;
+}
