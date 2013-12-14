@@ -4,6 +4,8 @@ var SpriteSheet = new Class({
 
         this.xSprites = xSprites;
         this.ySprites = ySprites;
+
+        this.material = new THREE.MeshBasicMaterial({ map:self.spriteSheet, side: THREE.DoubleSide, transparent: true});
     },
 
     // BOZE CODE, niet aanzitten
@@ -38,5 +40,9 @@ var SpriteSheet = new Class({
 
     getTexture: function () {
         return this.spriteSheet;
+    },
+
+    getMaterial: function () {
+        return this.material;
     }
 });
