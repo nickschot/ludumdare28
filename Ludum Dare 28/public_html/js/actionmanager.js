@@ -4,15 +4,16 @@
  * and open the template in the editor.
  */
 
+// Maps an action to a list of results
 function whatHappensIf(action) {
     var result;
     
     if(action.isMove) {
         result = ifMove(action);
     } else if (action.isAttackRanged) {
-        
+        result = ifAttackRanged(action);
     } else if (action.isAttackMelee) {
-        
+        result = ifAttackMelee(action);
     } else {
         result = undefined;
     }
@@ -23,6 +24,46 @@ function whatHappensIf(action) {
 function ifMove(moveAction) {
     var result;
     
+    var bounces = _calculateBounces(moveAction.toChunk.whatIsAt(moveAction.x, moveAction.y));
+    
+    if(bounces.length === 0) {
+        result = new ResultNothing();
+    } else {
+        result = new ResultBounce(bounces);
+    }
+
+    return result;
+}
+
+function ifAttackRanged(attackAction) {
+    var result;
+    
+    var bounces = _calculateBounces(attackAction.toChunk.whatIsAt(attackAction.x, moveAction.y));
+    
+    if(bounces.length === 0) {
+        result = new ResultNothing();
+    } else {
+        result = new ResultBounce(bounces);
+    }
+    
+    return result;
+}
+
+function ifAttackMelee(attackAction) {
+    var result;
+    
+    var bounces = _calculateBounces(attackAction.toChunk.whatIsAt(attackAction.x, moveAction.y));
+    
+    if(bounces.length === 0) {
+        result = new ResultNothing();
+    } else {
+        result = new ResultBounce(bounces);
+    }
+    
+    return result;
+}
+
+function _calculateBounces(objects) {
     var objects = moveAction.toChunk.whatIsAt(moveAction.x, moveAction.y);
     var bounces = new Array();
 
@@ -32,18 +73,5 @@ function ifMove(moveAction) {
         }
     }
 
-    if(bounces.length === 0) {
-        result = new ResultNothing();
-    } else {
-        result = new ResultBounce(bounces);
-    }
-    return result;
-}
-
-function ifAttackRanged(attackAction) {
-    var result;
-    
-    
-    
-    return result;
+    return bounces;
 }

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-
+//x and y are the potential movement space
 var ActionMoveHero = new Class({
     Extends: Move,
     initialize: function(x, y, chunk, toChunk) {

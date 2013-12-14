@@ -5,28 +5,29 @@
  */
 
 var Chunk = new Class({
-    initialize: function () {
-        this.objects = new Array();
+    initialize: function (tiles) {
+        this.tiles = tiles;
+        this.entities = new Array();
     },
     
-    addObject: function (object) {
-        this.objects = insertSorted(this.objects, object, "x");
+    addEntity: function (object) {
+        this.entities = insertSorted(this.objects, object, "x");
     },
     
-    removeObject: function (object) {
-        var i = this.objects.indexOf(object);
+    removeEntity: function (object) {
+        var i = this.entities.indexOf(object);
         
         if(index > -1) {
-            this.objects.splice(i, 1);
+            this.entities.splice(i, 1);
         }
     },
     
     whatIsAt: function(x, y) {
         var result = new Array();
         
-        for(var i = 0; i < this.objects.length; i++) {
-            if(this.objects[i].inObject(x, y)) {
-                result.push(this.objects[i]);
+        for(var i = 0; i < this.entities.length; i++) {
+            if(this.entities[i].inObject(x, y)) {
+                result.push(this.entities[i]);
             }
         }
         
