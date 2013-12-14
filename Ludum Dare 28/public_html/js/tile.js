@@ -1,8 +1,9 @@
+var tileSize = 32;
+
 var Tile = new Class({
+    Extends: Object,
     initialize: function(type, x, y, orientation){
-        this.x = x;
-        this.y = y;
-        this.size = 32;
+        this.parent(x, y, tileSize, tileSize, true);
         this.tile = this.getTileType(type);
         this.orientation = orientation !== undefined ? orientation : 'top';
     },
@@ -17,6 +18,7 @@ var Tile = new Class({
                 tileType = new TreeTile(this.size);
             case 'wall':
                 tileType = new WallTile(this.size, this.orientation);
+                this.isWalkable = false;
             default:
                 tileType = false;
                 break;

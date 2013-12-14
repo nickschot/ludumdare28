@@ -30,7 +30,7 @@ var Main = new Class({
         this.width = 800;
         this.height = 600;
 
-        $('stats').adopt(this.updateStats.domElement, this.frameStats.domElement);
+        $('stats-wrapper').adopt(this.updateStats.domElement, this.frameStats.domElement);
 
         //Tree.js shizzle
         this.renderer = this._getRenderer();

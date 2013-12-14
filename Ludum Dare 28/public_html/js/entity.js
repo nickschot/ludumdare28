@@ -22,7 +22,7 @@ var Entity = new Class({
     },
     
     update: function(){
-        
+        //AI???
     },
     
     move: function(){
