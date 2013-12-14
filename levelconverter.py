@@ -31,7 +31,7 @@ if __name__ == "__main__":
                 for x in range(xMin, xMax):
                     if x < width and y < height:
                         r, g, b = rgb_im.getpixel((x, y))
-                        kleurtje = hex(r * 2 ** 16 + g * 2 ** 8 + b)
+                        kleurtje = '#%02x%02x%02x' % (r, g, b)
                         inner_arr.append(kleurtje)
                     else:
                         inner_arr.append(0)
