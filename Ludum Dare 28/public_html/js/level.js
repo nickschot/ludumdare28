@@ -4,4 +4,8 @@
  * and open the template in the editor.
  */
 
-
+var Level = new Class({
+    initialize: function(chunks) {
+        this.chunks = chunks; //:: [[Chunk]] list of rows
+    }
+});

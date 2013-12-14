@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-
+//x and y are the coördinates of the potential attack
 var ActionAttackMelee = new Class({
     Extends: Attack,
-    initialize: function(chunk) {
-        this.parent(chunk);
+    initialize: function(x, y, width, height, chunk) {
+        this.parent(x, y, height, width, chunk);
         this.isAttackMelee = true;
     }  
 });
