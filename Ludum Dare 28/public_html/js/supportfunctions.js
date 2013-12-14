@@ -9,7 +9,7 @@
 function insertSorted(list, toAdd, sortOn) {
     var i = binarySearch(list, toAdd, sortOn);
     var result;
-    //console.log("i: " + i);
+    
     if(i === -1) {
         result = insertAt(list, toAdd, 0);
     } else if(i >= list.length) {
@@ -26,7 +26,6 @@ function insertSorted(list, toAdd, sortOn) {
 function insertAt(list, toAdd, at) {
     var begin = list.slice(0, at);
     var end   = list.slice(at, list.length);
-    console.log("at: " + at + " toAdd: " + toAdd.num);
     return begin.concat(new Array(toAdd)).concat(end);
 }
 
