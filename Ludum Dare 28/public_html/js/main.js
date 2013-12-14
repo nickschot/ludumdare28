@@ -21,6 +21,7 @@ var Main = new Class({
         this.nextTime = 0;
         this.stateManager = undefined; //TODO: actually make a stateManager
         this.ticks = 30;
+        this.next_time = undefined;
 
         //PIXI shizzle
         this.stage = new PIXI.Stage(0x66FF99);
@@ -30,10 +31,10 @@ var Main = new Class({
         this.updateStats = new Stats();
         this.frameStats = new Stats();
 
-        update();        
+        this.update();
         requestAnimationFrame(render);
         
-        $$(document.body).adopt({this.updateStats.domElement, this.frameStats.domElement});
+        $('stats').adopt(this.updateStats.domElement, this.frameStats.domElement);
     },
 
     render: function() {
@@ -45,7 +46,7 @@ var Main = new Class({
     update: function() {
         this.updateStats.begin();
         // Burn some cycles till the next update is requested
-        while((new Date).getTime() < next_time){}
+        while((new Date).getTime() < this.next_time){}
         // first ask the time
         var time = (new Date).getTime();
         // then update 
@@ -55,6 +56,7 @@ var Main = new Class({
         // update our stats
         this.updateStats.end();
         // then callback ourself with some marge, in this case 10ms
-        window.setTimeout(update, ((this.next_time - time) - 5));
+        var self = this;
+        window.setTimeout(self.update(), ((this.next_time - time) - 5));
     }
 });

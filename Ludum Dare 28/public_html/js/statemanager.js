@@ -14,7 +14,7 @@ var StateManager = new Class({
     switchTo: function(state) {
         this.currentState = state;
     }
-}
+});
 
 var State = new Class({
     ìnitialize: function (stateManager) {
@@ -24,7 +24,7 @@ var State = new Class({
     render:     function () {},
     onSelected: function () {},
     onEnded:    function () {}
-})
+});
 
 var InitState = new Class({
     Implements: State,
@@ -38,8 +38,7 @@ var InitState = new Class({
     update: function() {
         this.count++;
     }
-    
-})
+});
 
 var GameState = new Class({
     Implements: State,
@@ -47,7 +46,7 @@ var GameState = new Class({
     },
     update: function() {
     }
-})
+});
 
 var PauzeState = new Class({
     Implements: GameState,
@@ -56,4 +55,4 @@ var PauzeState = new Class({
     },
     update: function() {
     }
-})
+});
