@@ -1,3 +1,5 @@
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
 //Initialize and build form based on backend info
 var m;
 
@@ -16,6 +18,15 @@ window.addEvents({
 
 var Main = new Class({
     initialize: function(){
-        
+        requestAnimationFrame(render);
+        update();        
+    },
+
+    render: function() {
+
+    },
+    
+    update: function() {
+
     }
 });
