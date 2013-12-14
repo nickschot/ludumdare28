@@ -7,10 +7,6 @@ body{
     font-size: 88%;
     overflow-y:scroll;
     background:#EEE;
-    background:url('../img/site/papyrus.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -24,7 +20,6 @@ h1,h2,h3,h4,h5,h6 {
     background:rgba(255,255,255,0.8);
     box-shadow:0 0 10px #222;
     padding:20px;
-    border-radius:20px;
     margin-top:20px;
 }
 
