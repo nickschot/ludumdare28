@@ -27,58 +27,12 @@ var State = new Class({
     onEnded:    function () {}
 });
 
-var InitState = new Class({
-    Extends: State,
-    initialize: function (stateManager) {
-        this.parent(stateManager);
-
-        this.scene = new THREE.Scene();
-
-        this.camera = new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
-
-        this.camera.position.set(0, 0, 12.75);
-
-        this.camera.lookAt(this.scene.position);
-
-        this.scene.add(this.camera);
-
-        this.sprite = new THREE.ImageUtils.loadTexture('img/game/ui/loading.png');
-
-        this.material = new THREE.MeshBasicMaterial({ map:this.sprite, side: THREE.DoubleSide, transparent: true});
-        
-        this.planeGeo = new THREE.PlaneGeometry(1, 1);
-
-        this.mesh = new THREE.Mesh(this.planeGeo, this.material);
-
-        this.scene.add(this.mesh);
-
-        var self = this;
-        
-        var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
-            onSuccess: function(level) {
-                console.log("Hoi" + level);
-                self.stateManager.switchTo(new GameState(self.stateManager, level));
-            },
-            onFailure: function(xhr) {
-                console.log('Could not load overworld.json');
-                console.log(xhr);
-            }
-        }).get();
-    },
-
-    render: function(renderer) {
-        renderer.render(this.scene, this.camera);
-    },
-
-    update: function() {
-        this.mesh.rotation.z -= 0.3;
-    }
-});
-
 var GameState = new Class({
     Extends: State,
     initialize: function (stateManager, level) {
-        this.parent(stateManager);
+        this.stateManager = stateManager;
+        console.log("heey gamestate");
+
         this.count = 0;
         this.chunksOnscene = {};
 
@@ -111,6 +65,55 @@ var GameState = new Class({
         renderer.render(this.scene, this.camera);
     },
     update: function() {
+    }
+});
+
+var InitState = new Class({
+    Extends: State,
+    initialize: function (stateManager) {
+        this.stateManager = stateManager;
+
+        this.scene = new THREE.Scene();
+
+        this.camera = new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
+
+        this.camera.position.set(0, 0, 12.75);
+
+        this.camera.lookAt(this.scene.position);
+
+        this.scene.add(this.camera);
+
+        this.sprite = new THREE.ImageUtils.loadTexture('img/game/ui/loading.png');
+
+        this.material = new THREE.MeshBasicMaterial({ map:this.sprite, side: THREE.DoubleSide, transparent: true});
+        
+        this.planeGeo = new THREE.PlaneGeometry(1, 1);
+
+        this.mesh = new THREE.Mesh(this.planeGeo, this.material);
+
+        this.scene.add(this.mesh);
+
+        var self = this;
+        
+        console.log("heey initstate");
+//        var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
+//            onSuccess: function(level) {
+//                console.log("Hoi" + level);
+//                self.stateManager.switchTo(new GameState(self.stateManager, level));
+//            },
+//            onFailure: function(xhr) {
+//                console.log('Could not load overworld.json');
+//                console.log(xhr);
+//            }
+//        }).get();
+    },
+
+    render: function(renderer) {
+        renderer.render(this.scene, this.camera);
+    },
+
+    update: function() {
+        this.mesh.rotation.z -= 0.3;
     }
 });
 
