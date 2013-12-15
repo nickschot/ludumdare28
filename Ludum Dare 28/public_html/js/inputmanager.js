@@ -102,6 +102,7 @@ var inputKeyObject = {
 
 var InputManager = new Class({
     initialize: function(){
+        this.keysPressed = new Array();
         this.setBinds();
     },
     
@@ -112,31 +113,14 @@ var InputManager = new Class({
             var key = e.code;
             var keyPress = Object.keyOf(inputKeyObject, key);
             if(keyPress){
-                self._fireAction(keyPress);
+                self.keysPressed.include(keyPress);
             }
         });
     },
     
-    _fireAction: function(key){
-        switch(key){
-            case 'w':
-                
-                break;
-            case 'a':
-                
-                break;
-            case 's':
-                
-                break;
-            case 'd':
-                
-                break;
-            case 'spacebar':
-                
-                break;
-            default:
-                console.log('No action found for: '+key);
-                break;
-        }
+    getKeyPresses: function(){
+        var result = this.keysPressed;
+        this.keysPressed.empty();
+        return result;
     }
 });
