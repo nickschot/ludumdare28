@@ -1,9 +1,10 @@
 var Entity = new Class({
     Extends: Obj,
     
-    initialize: function(id, x, y, height, width, isWalkable){
+    initialize: function(id, x, y, height, width, isWalkable, level){
         this.parent(x, y, height, width, isWalkable);
         this.id = id;
+        this.level = level;
         console.log("entiteeh");
     },
     
@@ -21,13 +22,15 @@ var Entity = new Class({
 
     getSpriteIndexY: function() {
         return 0;
-    }
+    },
+
+    getRenderable: function() {}
 });
 
 var WizardEntity = new Class({
     Extends: Entity,
 
-    initialize: function(id, x, y, height, width, isWalkable){
+    initialize: function(id, x, y, height, width, isWalkable, level){
         this.parent(x,y,height,width,isWalkable);
         this.inputManager = new InputManager();
         this.renderable = this._createRenderable();
@@ -36,7 +39,14 @@ var WizardEntity = new Class({
         this.y = y;
 
         this.runMultiplier = 2.5;
-        this.speed = 2;
+        this.speed = 0.10;
+
+        this.level = level;
+
+        this.currentSpeed = 0.0;
+
+        this.fireCooldown = 0;
+        this.maxCooldown = 30;
     },
 
     update: function() {
@@ -48,6 +58,8 @@ var WizardEntity = new Class({
         var dirY = 0;
         
         var run = false;
+
+        var self = this;
         Array.each(keyPressed, function(key) {
             if(key == 'w'){
                 dirY += 1;
@@ -68,6 +80,12 @@ var WizardEntity = new Class({
             if(key === 'shift') {
                 run = true;
             }
+
+            if(key === 'spacebar' && self.fireCooldown == 0) {
+                console.log("spaaace");
+                self.level.addEntity(new Projectile("", 0, 0, 1.0, 1.0, true, this.level, 0.05, 0.05));
+                self.fireCooldown = self.maxCooldown;
+            }
         });
 
         var speedy = this.speed;
@@ -77,11 +95,15 @@ var WizardEntity = new Class({
 
         if(run) speedy = speedy * this.runMultiplier;
 
-        this.x += (dirX * speedy);
-        this.y += (dirY * speedy);
+        this.currentSpeed = (this.currentSpeed + speedy) / 2.0;
 
-        this.renderable.position.x = this.x / 32;
-        this.renderable.position.y = this.y / 32;
+        this.x += (dirX * this.currentSpeed);
+        this.y += (dirY * this.currentSpeed);
+
+        this.renderable.position.x = this.x;
+        this.renderable.position.y = this.y;
+
+        if(this.fireCooldown > 0) this.fireCooldown--;
     },
 
     _createRenderable: function() {
@@ -103,3 +125,30 @@ var WizardEntity = new Class({
 
     
 });
+
+var Projectile = new Class({
+    Extends: Entity,
+
+    initialize: function(id, x, y, height, width, isWalkable, level, xSpeed, ySpeed) {
+        this.parent(x,y,height,width,isWalkable, level);
+
+        this.mesh = this._createRenderable();
+
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
+    },
+
+    _createRenderable: function() {
+        return new THREE.Mesh(new THREE.PlaneGeometry(1,1), entitySheet.getMaterial());
+    },
+
+    getRenderable: function() {
+        return this.mesh;
+    },
+
+    update: function() {
+        this.mesh.position.x += this.xSpeed;
+        this.mesh.position.y += this.ySpeed;
+    }
+});
+    

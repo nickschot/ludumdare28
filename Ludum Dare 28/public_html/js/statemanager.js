@@ -35,7 +35,7 @@ var GameState = new Class({
         this.stateManager = stateManager;
 
         this.count = 0;
-        this.chunksOnscene = {};
+        this.entitiesOnScene = new Array();
 
         this.level = new Level(level_array);            
 
@@ -49,11 +49,13 @@ var GameState = new Class({
 
         this.addChunksToScene(this.level);
 
-        this.player = new WizardEntity("wizard", 0, 0, 32, 32, false);
+        this.player = new WizardEntity("wizard", 0, 0, 1.0, 1.0, false, this.level);
 
         this.scene.add(this.player.getRenderable());
 
         this.level.addEntity(this.player);
+
+        this.entitiesOnScene.push(this.player);
 
         console.log(this.level);
     },
@@ -82,12 +84,30 @@ var GameState = new Class({
         console.log(mesh);
         this.scene.add(mesh);
     },
+    // sometimes new entities spawn, add them to the scene
+    _addEntitiesToScene: function() {
+        var entities = this.level.getEntities();
+
+        var self = this;
+        
+        Array.each(entities, function(entity) {
+            if(!self.entitiesOnScene.contains(entity)){
+                console.log("HOO wacht eens even, deze entity kende ik nog niet :O");
+                var mesh = entity.getRenderable();
+
+                console.log(mesh);
+                self.scene.add(mesh);
+                self.entitiesOnScene.push(entity);
+            }
+        });
+    },
     render: function(renderer) {
-        this.camera.position.set(this.player.x / 32, this.player.y / 32, 22.5);
+        this.camera.position.set(this.player.x, this.player.y, 22.5);
         renderer.render(this.scene, this.camera);
     },
     update: function() {
         this.level.update();
+        this._addEntitiesToScene();
     }
 });
 
