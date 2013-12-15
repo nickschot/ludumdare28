@@ -42,43 +42,65 @@ var GameState = new Class({
         this.scene = new THREE.Scene();
         // TODO: doe hier eens niet 800 bij 600
         this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
-        this.camera.position.set(0, 0, 10.5);
+        this.camera.position.set(0, 0, 50);
         //this.camera.lookAt(this.scene.position);
         this.scene.add(this.camera);
 
-        var chunk = this.chunkManager.getChunk(0,0);
+//        var chunk = this.chunkManager.getChunk(0,0);
+//
+//        this.plane = new THREE.PlaneGeometry(25, 19, 25, 19);
+//
+//        this.plane.faceVertexUvs = [[]]
+//
+//        for(var y  = 0; y < chunk.length; y++){
+//            for(var x = 0; x < chunk[y].length; x++){
+//                var tileType = chunk[y][x];
+//
+//                uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
+//
+//                this.plane.faceVertexUvs[0].push([ uv[1], uv[0], uv[2] ] );
+//
+//                this.plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
+//                
+//            }
+//        }
+//
+//        this.material = new THREE.MeshBasicMaterial({ map:this.spriteSheet, side: THREE.DoubleSide, transparent: true});
+//
+//        this.mesh = new THREE.Mesh(this.plane, tileSheet.getMaterial());
 
-        this.plane = new THREE.PlaneGeometry(25, 19, 25, 19);
+//        this.scene.add(this.mesh);
 
-        console.log(this.plane.faces);
+          this.addChunksToScene(this.chunkManager.getChunks());
+    },
 
-        console.log(this.plane.faceVertexUvs);
+    addChunksToScene: function(chunks) {
+        for(var y = 0; y < chunks.length; y++){
+            for(var x = 0; x < chunks[y].length; x++){
+                var plane = new THREE.PlaneGeometry(25, 19, 25, 19);
+                plane.faceVertexUvs = [[]];
 
-        this.plane.faceVertexUvs = [[]]
+                for(var j = 0; j < chunks[y][x].length; j++){
+                    for(var i = 0; i < chunks[y][x][j].length; i++){
+                        var tileType = chunks[y][x][j][i];
 
-        for(var y  = 0; y < chunk.length; y++){
-            for(var x = 0; x < chunk[y].length; x++){
-                var facesIndex1 = (y * chunk.length + x) * 2;
-                var facesIndex2 = facesIndex1 + 1;
+                        var uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
 
-                var tileType = chunk[y][x];
+                        plane.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
 
-                uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
+                        plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
+                    }
+                }
 
-                this.plane.faceVertexUvs[0].push([ uv[1], uv[0], uv[2] ] );
+                var mesh = new THREE.Mesh(plane, tileSheet.getMaterial());
+                mesh.position.x = x * 25;
+                mesh.position.y = -1 * y * 19;
 
-                this.plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
-                
+                console.log(mesh);
+
+                this.scene.add(mesh);
             }
         }
-
-        console.log(this.plane.faceVertexUvs);
-
-        this.material = new THREE.MeshBasicMaterial({ map:this.spriteSheet, side: THREE.DoubleSide, transparent: true});
-
-        this.mesh = new THREE.Mesh(this.plane, tileSheet.getMaterial());
-
-        this.scene.add(this.mesh);
     },
     render: function(renderer) {
         renderer.render(this.scene, this.camera);
