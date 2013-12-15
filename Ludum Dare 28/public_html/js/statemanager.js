@@ -51,7 +51,7 @@ var GameState = new Class({
         var self = this;
 
         Array.each(chunks, function(chunk) {
-            var tiles = chunk.getTiles()
+            var tiles = chunk.getTiles();
             for(var i = 0; i < tiles.length; i++){
                 for(var j = 0; j < tiles[i].length; j++) {
                     self.scene.add(tiles[i][j]);
@@ -96,16 +96,16 @@ var InitState = new Class({
         var self = this;
         
         console.log("heey initstate");
-//        var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
-//            onSuccess: function(level) {
-//                console.log("Hoi" + level);
-//                self.stateManager.switchTo(new GameState(self.stateManager, level));
-//            },
-//            onFailure: function(xhr) {
-//                console.log('Could not load overworld.json');
-//                console.log(xhr);
-//            }
-//        }).get();
+        var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
+            onSuccess: function(level) {
+                console.log("Hoi" + level);
+                self.stateManager.switchTo(new GameState(self.stateManager, level));
+            },
+            onFailure: function(xhr) {
+                console.log('Could not load overworld.json');
+                console.log(xhr);
+            }
+        }).get();
     },
 
     render: function(renderer) {
@@ -114,14 +114,5 @@ var InitState = new Class({
 
     update: function() {
         this.mesh.rotation.z -= 0.3;
-    }
-});
-
-var PauzeState = new Class({
-    Implements: GameState,
-    render: function () {
-        this.parent.render();
-    },
-    update: function() {
     }
 });
