@@ -73,3 +73,9 @@ function binarySearch(list, element, searchOn) {
     }
     return -2;
 }
+
+function oneNegOtherPos(a, b) {
+    var absa = Math.abs(a);
+    var absb = Math.abs(b);
+    return (absa !== a && absb === b) || (absa === a && absb !== b);
+} 

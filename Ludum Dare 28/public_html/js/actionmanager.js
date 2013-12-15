@@ -24,7 +24,7 @@ function whatHappensIf(action) {
 function ifMove(moveAction) {
     var result;
     
-    var bounces = _calculateBounces(moveAction.toChunk.whatIsAt(moveAction.x, moveAction.y));
+    var bounces = _calculateBounces(moveAction.toChunk.whatIsAt(moveAction.toPlane()));
     
     if(bounces.length === 0) {
         result = new ResultNothing();
@@ -38,7 +38,7 @@ function ifMove(moveAction) {
 function ifAttackRanged(attackAction) {
     var result;
     
-    var bounces = _calculateBounces(attackAction.toChunk.whatIsAt(attackAction.x, moveAction.y));
+    var bounces = _calculateBounces(attackAction.toChunk.whatIsAt(attackAction.toPlane()));
     
     if(bounces.length === 0) {
         result = new ResultNothing();
@@ -52,7 +52,7 @@ function ifAttackRanged(attackAction) {
 function ifAttackMelee(attackAction) {
     var result;
     
-    var bounces = _calculateBounces(attackAction.toChunk.whatIsAt(attackAction.x, moveAction.y));
+    var bounces = _calculateBounces(attackAction.toChunk.whatIsAt(attackAction.toPlane()));
     
     if(bounces.length === 0) {
         result = new ResultNothing();
@@ -64,7 +64,6 @@ function ifAttackMelee(attackAction) {
 }
 
 function _calculateBounces(objects) {
-    var objects = moveAction.toChunk.whatIsAt(moveAction.x, moveAction.y);
     var bounces = new Array();
 
     for(var i = 0; i < objects.length; i++) {

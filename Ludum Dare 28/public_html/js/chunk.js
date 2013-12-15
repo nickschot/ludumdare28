@@ -16,11 +16,11 @@ var Chunk = new Class({
         }
     },
     
-    whatIsAt: function(x, y) {
+    whatIsAt: function(rect) {
         var result = new Array();
         
         for(var i = 0; i < this.entities.length; i++) {
-            if(this.entities[i].inObject(x, y)) {
+            if(this.entities[i].inObject(rect)) {
                 result.push(this.entities[i]);
             }
         }
