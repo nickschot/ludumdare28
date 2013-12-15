@@ -1,8 +1,10 @@
+
+
 var Entity = new Class({
     Extends: Obj,
     
-    initialize: function(id, x, y, height, width, isWalkable){
-        this.parent(x, y, height, width, isWalkable);
+    initialize: function(id, x, y, height, width, isWalkable, level){
+        this.parent(id, x, y, height, width, isWalkable, level);
         this.id = id;
         console.log("entiteeh");
     },
@@ -28,7 +30,7 @@ var WizardEntity = new Class({
     Extends: Entity,
 
     initialize: function(id, x, y, height, width, isWalkable){
-        this.parent(x,y,height,width,isWalkable);
+        this.parent(id, x,y,height,width,isWalkable);
         this.inputManager = new InputManager();
         this.renderable = this._createRenderable();
 
@@ -39,7 +41,7 @@ var WizardEntity = new Class({
         this.speed = 2;
     },
 
-    update: function() {
+    update: function(level) {
         var keyPressed = this.inputManager.getKeyPresses();
 
         var self = this;
@@ -100,6 +102,4 @@ var WizardEntity = new Class({
     getRenderable: function() {
         return this.renderable;
     }
-
-    
 });

@@ -1,8 +1,6 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+var evaluationDistance = 20; //Distance
+var hitboxEvaluationDistance = 2;
+
 
 // Maps an action to a list of results
 function whatHappensIf(action) {
@@ -22,37 +20,66 @@ function whatHappensIf(action) {
 }
 
 function ifMove(moveAction) {
-    var result;
-    
-    var bounces = _calculateBounces(moveAction.toChunk.whatIsAtPlane(moveAction.toPlane(), moveAction.entity));
-    
-    if(bounces.length === 0) {
-        result = new ResultNothing();
-    } else {
-        result = new ResultBounce(bounces);
-    }
-
-    return result;
+    return _whatWouldHitRect(moveAction);
 }
 
 function ifAttackRanged(attackActionRanged) {
-    var result;
-    
-    var bounces = _calculateBounces(attackAction.toChunk.whatIsAtPlane(attackActionRanged.toPlane()));
-    
-    if(bounces.length === 0) {
-        result = new ResultNothing();
-    } else {
-        result = new ResultBounce(bounces);
-    }
-    
-    return result;
+    return _whatWouldHitRect(attackActionRanged);
 }
 
 function ifAttackMelee(attackActionMelee) {
+    return _whatWouldHitCirc(attackActionMelee);
+}
+
+function _whatWouldHitRect(action) {
     var result;
+    var evaluationCircle = new Circle(new Point(action.x, action.y), evaluationDistance);
+    //First calculate which objects their origins lie within evaluationcircle
+    var objectsInEC = action.level.getObjectsOriginInCircle(evaluationCircle);
     
-    var bounces = _calculateBounces(attackAction.toChunk.whatIsAtCircle(attackActionMelee.toCircle()));
+    var hitboxEvaluationCircle = new Circle(new Point(action.x, action.y), hitboxEvaluationDistance);
+    var objectsInHitBoxEC = new Array();
+    
+    //Second calculate which objects their hitboxes lie within hitboxEvaluationCircle
+    for(var i = 0; i < objectsInEC.length; i++) {
+        if(objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
+            objectsInHitBoxEC.push(objectsInEC[i]);
+        }
+    }
+    
+    var bounces = new Array();
+    //Third calculate which nearest objects their hitboxes lie within object hitbox
+    for(var i = 0; i < objectsInHitBoxEC.length; i++) {
+        if(action.entity.inObjectPlane(objectsInHitBoxEC[i].toPlane())) {
+            bounces.push(objectsInHitBoxEC[i]);
+        }
+    }
+    
+    if(bounces.length === 0) {
+        result = new ResultNothing();
+    } else {
+        result = new ResultBounce(bounces);
+    }
+
+    return result;
+}
+
+function _whatWouldHitCircle(action) {
+    var result;
+    var evaluationCircle = new Circle(new Point(action.x, action.y), evaluationDistance);
+    //First calculate which objects their origins lie within evaluationcircle
+    var objectsInEC = action.level.getObjectsOriginInCircle(evaluationCircle);
+    
+    var hitboxEvaluationCircle = new Circle(new Point(action.x, action.y), action.range);
+    var bounces = new Array();
+    
+    //Second calculate which objects their hitboxes lie within hitboxEvaluationCircle
+    for(var i = 0; i < objectsInEC.length; i++) {
+        if(objectsInEC[i].isWalkable() && objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
+            bounces.push(objectsInEC[i]);
+        }
+    }
+    
     
     if(bounces.length === 0) {
         result = new ResultNothing();
@@ -63,14 +90,11 @@ function ifAttackMelee(attackActionMelee) {
     return result;
 }
 
-function _calculateBounces(objects) {
-    var bounces = new Array();
-
-    for(var i = 0; i < objects.length; i++) {
-        if(!objects[i].isWalkable) {
-            bounces.push(objects[i]);
-        }
-    }
-
-    return bounces;
+function _tilePointToRectangle(p) {
+    return new Plane(
+                new Point(p.x, p.y),
+                new Point(p.x + tileWidth, p.y),
+                new Point(p.x + tileWidth, p.y + tileHeight),
+                new Point(p.x, p.y + tileHeight)
+            );
 }
