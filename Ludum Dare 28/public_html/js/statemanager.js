@@ -42,36 +42,12 @@ var GameState = new Class({
         this.scene = new THREE.Scene();
         // TODO: doe hier eens niet 800 bij 600
         this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
-        this.camera.position.set(0, 0, 50);
+
+        this.camera.position.set(10, -10, 22.5);
         //this.camera.lookAt(this.scene.position);
         this.scene.add(this.camera);
 
-//        var chunk = this.chunkManager.getChunk(0,0);
-//
-//        this.plane = new THREE.PlaneGeometry(25, 19, 25, 19);
-//
-//        this.plane.faceVertexUvs = [[]]
-//
-//        for(var y  = 0; y < chunk.length; y++){
-//            for(var x = 0; x < chunk[y].length; x++){
-//                var tileType = chunk[y][x];
-//
-//                uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
-//
-//                this.plane.faceVertexUvs[0].push([ uv[1], uv[0], uv[2] ] );
-//
-//                this.plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
-//                
-//            }
-//        }
-//
-//        this.material = new THREE.MeshBasicMaterial({ map:this.spriteSheet, side: THREE.DoubleSide, transparent: true});
-//
-//        this.mesh = new THREE.Mesh(this.plane, tileSheet.getMaterial());
-
-//        this.scene.add(this.mesh);
-
-          this.addChunksToScene(this.chunkManager.getChunks());
+        this.addChunksToScene(this.chunkManager.getChunks());
     },
 
     addChunksToScene: function(chunks) {

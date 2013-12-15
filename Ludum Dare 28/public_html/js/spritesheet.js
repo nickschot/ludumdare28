@@ -17,16 +17,16 @@ var SpriteSheet = new Class({
         y = (this.ySprites - 1) - y;
 
 
-        var uMin =  x    * uDelta;
-        var uMax = (x+1) * uDelta;
-        var vMin =  y    * vDelta;
-        var vMax = (y+1) * vDelta;
+        var uMin =  x    * uDelta + 0.002;
+        var uMax = (x+1) * uDelta - 0.002;
+        var vMin =  y    * vDelta + 0.002;
+        var vMax = (y+1) * vDelta - 0.002;
 
         var faceuv = [
             new THREE.Vector2(uMin, vMin),
             new THREE.Vector2(uMin, vMax),
             new THREE.Vector2(uMax, vMax),
-            new THREE.Vector2(uMax, vMin),
+            new THREE.Vector2(uMax, vMin)
         ];
 
         return faceuv;
