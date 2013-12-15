@@ -83,19 +83,19 @@ var GameState = new Class({
 
         var self = this;
 
-//        var jsonRequest = new Request.JSON({url: 'level/overworld.json', onSucces: function(level) {
-//            self.chunkManager = new ChunkManager(level);            
-//
-//            self.scene = new THREE.Scene();
-//            // TODO: doe hier eens niet 800 bij 600
-//            self.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
-//            self.camera.position.set(0, 0, -22.5);
-//            self.camera.lookAt(self.scene.position);
-//            self.scene.add(self.camera);
-//
-//            var chunks = chunkManager.renderChunk();
-//
-//         }}).get();
+        var jsonRequest = new Request.JSON({url: 'level/overworld.json', onSuccess: function(level) {
+            self.chunkManager = new ChunkManager(level);            
+
+            self.scene = new THREE.Scene();
+            // TODO: doe hier eens niet 800 bij 600
+            self.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
+            self.camera.position.set(0, 0, -22.5);
+            self.camera.lookAt(self.scene.position);
+            self.scene.add(self.camera);
+
+            var chunks = self.chunkManager.renderChunk();
+
+         }}).get();
     },
     render: function(renderer) {
         renderer.render(this.scene, this.camera);
