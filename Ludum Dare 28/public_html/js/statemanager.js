@@ -46,7 +46,7 @@ var GameState = new Class({
         this.camera.lookAt(this.scene.position);
         this.scene.add(this.camera);
 
-        var chunks = self.chunkManager.renderChunk();
+        var chunks = this.chunkManager.renderChunk();
 
         var self = this;
 
