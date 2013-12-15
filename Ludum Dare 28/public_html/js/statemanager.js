@@ -42,7 +42,7 @@ var GameState = new Class({
         this.scene = new THREE.Scene();
         // TODO: doe hier eens niet 800 bij 600
         this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
-        this.camera.position.set(0, 0, 10.5);
+        this.camera.position.set(0, 0, 22.5);
         //this.camera.lookAt(this.scene.position);
         this.scene.add(this.camera);
 
@@ -50,20 +50,13 @@ var GameState = new Class({
 
         this.plane = new THREE.PlaneGeometry(25, 19, 25, 19);
 
-        console.log(this.plane.faces);
-
-        console.log(this.plane.faceVertexUvs);
-
-        this.plane.faceVertexUvs = [[]]
+        this.plane.faceVertexUvs = [[]];
 
         for(var y  = 0; y < chunk.length; y++){
             for(var x = 0; x < chunk[y].length; x++){
-                var facesIndex1 = (y * chunk.length + x) * 2;
-                var facesIndex2 = facesIndex1 + 1;
-
                 var tileType = chunk[y][x];
 
-                uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
+                var uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
 
                 this.plane.faceVertexUvs[0].push([ uv[1], uv[0], uv[2] ] );
 
