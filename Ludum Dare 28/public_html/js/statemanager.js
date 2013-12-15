@@ -81,6 +81,7 @@ var GameState = new Class({
         this.scene.add(mesh);
     },
     render: function(renderer) {
+        this.camera.position.set(this.player.x / 32, this.player.y / 32, 22.5);
         renderer.render(this.scene, this.camera);
     },
     update: function() {

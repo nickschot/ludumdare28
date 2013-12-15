@@ -23,7 +23,7 @@ var Level = new Class({
     },
 
     addEntity: function(entity) {
-        this.entities.append(entity);
+        this.entities.push(entity);
     },
 
     getEntities: function() {
@@ -40,6 +40,10 @@ var Level = new Class({
 
     getLevel: function() {
         return this.tileTypeChunks;
+    },
+
+    update: function() {
+        Array.each(this.entities, function(entity) { entity.update() } );
     },
     
     _getTileType: function(color){

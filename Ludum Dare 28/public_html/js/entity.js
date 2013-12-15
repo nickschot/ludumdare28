@@ -21,11 +21,32 @@ var WizardEntity = new Class({
 
     initialize: function(id, x, y, height, width, isWalkable){
         this.parent(x,y,height,width,isWalkable);
-        console.log("wizaaarad");
+        this.inputManager = new InputManager();
+
+        this.x = x;
+        this.y = y;
+
+        this.xSpeed = 5;
+        this.ySpeed = 5;
     },
 
     update: function() {
+        var keyPressed = this.inputManager.getKeyPresses();
 
+        if(Array.contains(keyPressed, 'up arrow')){
+            this.y += this.ySpeed;
+        }
 
+        if(Array.contains(keyPressed, 'down arrow')) {
+            this.y -= this.ySpeed;
+        }
+
+        if(Array.contains(keyPressed, 'left arrow')) {
+            this.x -= this.xSpeed;
+        }
+
+        if(Array.contains(keyPressed, 'right arrow')) {
+            this.x += this.xSpeed;
+        }
     }
 });

@@ -111,6 +111,7 @@ var InputManager = new Class({
         $(document).addEvent('keydown', function(e){
             e.preventDefault();//disables default key actions
             var key = e.code;
+
             var keyPress = Object.keyOf(inputKeyObject, key);
             if(keyPress){
                 self.keysPressed.include(keyPress);
@@ -119,7 +120,7 @@ var InputManager = new Class({
     },
     
     getKeyPresses: function(){
-        var result = this.keysPressed;
+        var result = this.keysPressed.clone();
         this.keysPressed.empty();
         return result;
     }
