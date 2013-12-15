@@ -1,3 +1,5 @@
+
+
 var Entity = new Class({
     Extends: Obj,
     
@@ -49,7 +51,7 @@ var WizardEntity = new Class({
         this.maxCooldown = 30;
     },
 
-    update: function() {
+    update: function(level) {
         var keyPressed = this.inputManager.getKeyPresses();
 
         var self = this;
@@ -61,7 +63,7 @@ var WizardEntity = new Class({
 
         var self = this;
         Array.each(keyPressed, function(key) {
-            if(key == 'w'){
+            if(key === 'w'){
                 dirY += 1;
             }
 
@@ -89,7 +91,7 @@ var WizardEntity = new Class({
         });
 
         var speedy = this.speed;
-        if(dirX != 0 && dirY != 0){
+        if(dirX !== 0 && dirY !== 0){
             speedy = this.speed * Math.sin(0.25 * Math.PI);
         }
 
@@ -122,8 +124,6 @@ var WizardEntity = new Class({
     getRenderable: function() {
         return this.renderable;
     }
-
-    
 });
 
 var Projectile = new Class({

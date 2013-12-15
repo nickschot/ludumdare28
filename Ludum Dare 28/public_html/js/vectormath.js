@@ -7,7 +7,7 @@
 var Circle = new Class({
    initialize: function(p, radius) {
        this.p = p;
-       this.radius;
+       this.radius = radius;
    }, 
    
    doesPlaneIntersect: function(plane) {
@@ -30,6 +30,12 @@ var Circle = new Class({
        
        intersectPoint = perpenv.vectorIntersectionPoint(v);
        return intersectPoint.lengthBetweenPoint(this.p) <= this.radius;
+   },
+   
+   doesPointIntersect: function(p) {
+       var distance = this.p.lengthBetweenPoint(p);
+       
+       return distance <= this.radius;
    }
 });
 
