@@ -43,11 +43,17 @@ var GameState = new Class({
         // TODO: doe hier eens niet 800 bij 600
         this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
 
-        this.camera.position.set(0, -10, 25.5);
+        this.camera.position.set(0, -10, 22.5);
         //this.camera.lookAt(this.scene.position);
         this.scene.add(this.camera);
 
         this.addChunksToScene(this.level);
+
+        this.player = new WizardEntity("wizard", 32, 32, 32, 32, false);
+
+        this.level.addEntity(this.player);
+
+        console.log(this.level);
     },
 
     addChunksToScene: function(level) {
@@ -78,6 +84,7 @@ var GameState = new Class({
         renderer.render(this.scene, this.camera);
     },
     update: function() {
+        this.level.update();
     }
 });
 

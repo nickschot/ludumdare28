@@ -1,28 +1,10 @@
 var Entity = new Class({
-    Extends: Object,
+    Extends: Obj,
     
-    initialize: function(id, x, y, height, width, isWalkable, type){
+    initialize: function(id, x, y, height, width, isWalkable){
         this.parent(x, y, height, width, isWalkable);
         this.id = id;
-        this.type = type;
-        this.entityType = createEntityType();
-    },
-    
-    createEntityType: function(){
-        var entity;
-        switch(this.type){
-            case 'wizard':
-                entity = new WizardEntity();
-                break;
-            case 'dragon':
-                entity = new DragonEntity();
-                break;
-            default:
-                entity = null;
-                break;
-        }
-        
-        return entity;
+        console.log("entiteeh");
     },
     
     update: function(){
@@ -31,5 +13,19 @@ var Entity = new Class({
     
     move: function(){
         
+    },
+});
+
+var WizardEntity = new Class({
+    Extends: Entity,
+
+    initialize: function(id, x, y, height, width, isWalkable){
+        this.parent(x,y,height,width,isWalkable);
+        console.log("wizaaarad");
+    },
+
+    update: function() {
+
+
     }
 });
