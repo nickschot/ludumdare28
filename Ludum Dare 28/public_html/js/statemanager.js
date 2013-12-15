@@ -1,7 +1,7 @@
 var StateManager = new Class({
     initialize: function(renderer) {
         this.renderer = renderer;
-        this.currentState = new InitState();
+        this.currentState = new InitState(this);
     },
 
     update: function() {
@@ -53,13 +53,13 @@ var InitState = new Class({
         this.scene.add(this.mesh);
 
         var self = this;
-
+        
         var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
-            onSucces: function(level, text) {
-                console.log("HOOOOOOI");
-                self.switchTo(new GameState(self.stateManager, level));
-            }, 
-            onFailure: function(xhr) { 
+            onSuccess: function(level) {
+                self.stateManager.switchTo(new GameState(self.stateManager, level));
+            },
+            onFailure: function(xhr) {
+                console.log('Could not load overworld.json');
                 console.log(xhr);
             }
         }).get();
