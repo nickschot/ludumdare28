@@ -16,15 +16,32 @@ var Chunk = new Class({
         }
     },
     
-    whatIsAt: function(rect) {
-        var result = new Array();
+    containsEntity: function(entity) {
+        return this.entities.some(function(item, index){
+            return item.id === entity.id;
+        });
+    },
+    //TODO
+    getPointLeftTopPixels: function() {
+        return new Point(4, 5);
+    },
+    //TODO
+    getHeightPixels: function() {
+        return 340;
+    },
+    //TODO
+    getWidthPixels: function() {
+        return 123;
+    },
+    
+    toPlane: function() {
+        var point = this.getPointLeftTopPixels();
+        var height = this.getHeightPixels();
+        var width = this.getWidthPixels();
         
-        for(var i = 0; i < this.entities.length; i++) {
-            if(this.entities[i].inObject(rect)) {
-                result.push(this.entities[i]);
-            }
-        }
-        
-        return result;
+        return new Plane (point, 
+                          new Point(point.x + width, point.y), 
+                          new Point(point.x + width, point.y + height), 
+                          new Point(point.x, point.y + height));
     }
 });

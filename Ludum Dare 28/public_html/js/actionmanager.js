@@ -24,7 +24,7 @@ function whatHappensIf(action) {
 function ifMove(moveAction) {
     var result;
     
-    var bounces = _calculateBounces(moveAction.toChunk.whatIsAt(moveAction.toPlane()));
+    var bounces = _calculateBounces(moveAction.toChunk.whatIsAtPlane(moveAction.toPlane(), moveAction.entity));
     
     if(bounces.length === 0) {
         result = new ResultNothing();
@@ -35,10 +35,10 @@ function ifMove(moveAction) {
     return result;
 }
 
-function ifAttackRanged(attackAction) {
+function ifAttackRanged(attackActionRanged) {
     var result;
     
-    var bounces = _calculateBounces(attackAction.toChunk.whatIsAt(attackAction.toPlane()));
+    var bounces = _calculateBounces(attackAction.toChunk.whatIsAtPlane(attackActionRanged.toPlane()));
     
     if(bounces.length === 0) {
         result = new ResultNothing();
@@ -49,10 +49,10 @@ function ifAttackRanged(attackAction) {
     return result;
 }
 
-function ifAttackMelee(attackAction) {
+function ifAttackMelee(attackActionMelee) {
     var result;
     
-    var bounces = _calculateBounces(attackAction.toChunk.whatIsAt(attackAction.toPlane()));
+    var bounces = _calculateBounces(attackAction.toChunk.whatIsAtCircle(attackActionMelee.toCircle()));
     
     if(bounces.length === 0) {
         result = new ResultNothing();

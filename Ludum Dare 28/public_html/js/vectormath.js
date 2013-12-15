@@ -59,16 +59,16 @@ var Plane = new Class({
    },
    
    
-   doesPlaneIntersect: function (r1, r2) {
+   doesPlaneIntersect: function (r2) {
         var result = false;
 
-        if(r1.p1.equals(r2.p1) && r1.p2.equals(r2.p2) && r1.p3.equals(r2.p3) && r1.p4.equals(r2.p4)) {
+        if(this.p1.equals(r2.p1) && this.p2.equals(r2.p2) && this.p3.equals(r2.p3) && this.p4.equals(r2.p4)) {
             //plane1 is plane2
             result = true;
-        } else if(r1.doesPointLieInPlane(r2.p1) || r1.doesPointLieInPlane(r2.p2) || r1.doesPointLieInPlane(r2.p3) || r1.doesPointLieInPlane(r2.p4)) {
+        } else if(this.doesPointLieInPlane(r2.p1) || this.doesPointLieInPlane(r2.p2) || this.doesPointLieInPlane(r2.p3) || this.doesPointLieInPlane(r2.p4)) {
             //1 or more points of plane2 are in plane1
             result = true;
-        } else if(r2.doesPointLieInPlane(r1.p1) || r2.doesPointLieInPlane(r1.p2) || r2.doesPointLieInPlane(r1.p3) || r2.doesPointLieInPlane(r1.p4)) {
+        } else if(r2.doesPointLieInPlane(this.p1) || r2.doesPointLieInPlane(this.p2) || r2.doesPointLieInPlane(this.p3) || r2.doesPointLieInPlane(this.p4)) {
             //1 or more points of plane2 are in plane1
             result = true;
         }
