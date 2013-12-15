@@ -12,6 +12,21 @@ var ChunkManager = new Class({
      */
     initialize: function(chunks){
         this.chunks = chunks;
+
+        this.tileTypeChunks = new Array();
+        for(var y = 0; y < this.chunks.length; y++){
+            this.tileTypeChunks[y] = new Array();
+            for(var x = 0; x < this.chunks[y].length; x++){
+                this.tileTypeChunks[y][x] = new Array();
+                for(var j = 0; j < this.chunks[y][x].length; j++){
+                    this.tileTypeChunks[y][x][j] = new Array();
+                    for(var i = 0; i < this.chunks[y][x][j].length; i++){
+                        var tile = this.chunks[y][x][j][i];
+                        this.tileTypeChunks[y][x][j][i] = this._getTileType(tile);
+                    }
+                }
+            }
+        }
         this.spriteSheetCache = {}
     },
     
@@ -42,6 +57,10 @@ var ChunkManager = new Class({
             }
         }
         return res;
+    },
+
+    getChunks: function() {
+        return this.tileTypeChunks;
     },
     
     renderChunk: function(x,y){
