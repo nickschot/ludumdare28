@@ -2,9 +2,8 @@
  * Singleton class that manages all chunks
  * @type Class
  */
-
-var CHUNK_SIZE_X = 25;
-var CHUNK_SIZE_Y = 19;
+var tileWidth = 32;
+var tileHeight = 32;
 
 var Level = new Class({
     /**
@@ -44,6 +43,47 @@ var Level = new Class({
 
     update: function() {
         Array.each(this.entities, function(entity) { entity.update() } );
+    },
+    
+    getObjectsOriginInCircle: function(circle) {
+        var objects = this.getEntities() + this.tilesFromCircle(circle);
+        var result = new Array();
+        
+        for(var i = 0; i < objects.length; i++) {
+            if(circle.doesPointIntersect(new Point(objects[i].x, objects[i].y))) {
+                result.push(objects[i]);
+            }
+        }
+        
+        return result;
+    },
+    
+    tilesFromCircle: function(circle) {
+        return tileFromRectange(new Plane(
+                    new Point(circle.x - circle.radius, circle.y - circle.radius),
+                    new Point(circle.x + circle.radius, circle.y - circle.radius),
+                    new Point(circle.x + circle.radius, circle.y + circle.radius),
+                    new Point(circle.x - circle.radius, circle.y + circle.radius)
+                ));
+    },
+    
+    tilesFromRectangle: function(rect) {
+        var result = new Array();
+        
+        for(var y = Math.floor(rect.p1.y); y < rect.p3.y; y++) {
+            for(var x = Math.floor(rect.p1.x); x < rect.p2.x; x++) {
+                var tX = x + (tileWidth / 2);
+                var tY = y + (tileHeight / 2);
+                result.push(new Tile("tile" + tX + "," + tY, tX, tY, tileHeight, tileWidth, !isWall(x,y), this));
+            }
+            
+        }
+        
+        return result;
+    },
+    
+    isWall: function (x, y) {
+       return this.getLevel[y][x].wall;
     },
     
     _getTileType: function(color){
