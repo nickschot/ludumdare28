@@ -90,7 +90,7 @@ var InitState = new Class({
 
         this.camera = new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
 
-        this.camera.position.set(0, 0, 12.75);
+        this.camera.position.set(0, 0, 22.5);
 
         this.camera.lookAt(this.scene.position);
 
