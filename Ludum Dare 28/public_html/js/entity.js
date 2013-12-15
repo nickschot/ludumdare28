@@ -1,8 +1,9 @@
 var Entity = new Class({
     Extends: Object,
     
-    initialize: function(x, y, height, width, isWalkable, type){
-        this.parent(x, y, height, width, isWalkable);  
+    initialize: function(id, x, y, height, width, isWalkable, type){
+        this.parent(x, y, height, width, isWalkable);
+        this.id = id;
         this.type = type;
         this.entityType = createEntityType();
     },
