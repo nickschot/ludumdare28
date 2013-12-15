@@ -49,7 +49,9 @@ var GameState = new Class({
 
         this.addChunksToScene(this.level);
 
-        this.player = new WizardEntity("wizard", 32, 32, 32, 32, false);
+        this.player = new WizardEntity("wizard", 0, 0, 32, 32, false);
+
+        this.scene.add(this.player.getRenderable());
 
         this.level.addEntity(this.player);
 

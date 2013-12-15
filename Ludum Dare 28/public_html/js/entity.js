@@ -14,6 +14,14 @@ var Entity = new Class({
     move: function(){
         
     },
+
+    getSpriteIndexX: function() {
+        return 0;
+    },
+
+    getSpriteIndexY: function() {
+        return 0;
+    }
 });
 
 var WizardEntity = new Class({
@@ -22,31 +30,76 @@ var WizardEntity = new Class({
     initialize: function(id, x, y, height, width, isWalkable){
         this.parent(x,y,height,width,isWalkable);
         this.inputManager = new InputManager();
+        this.renderable = this._createRenderable();
 
         this.x = x;
         this.y = y;
 
-        this.xSpeed = 5;
-        this.ySpeed = 5;
+        this.runMultiplier = 2.5;
+        this.speed = 2;
     },
 
     update: function() {
         var keyPressed = this.inputManager.getKeyPresses();
 
-        if(Array.contains(keyPressed, 'up arrow')){
-            this.y += this.ySpeed;
+        var self = this;
+
+        var dirX = 0;
+        var dirY = 0;
+        
+        var run = false;
+        Array.each(keyPressed, function(key) {
+            if(key == 'w'){
+                dirY += 1;
+            }
+
+            if(key === 's') {
+                dirY -= 1;
+            }
+
+            if(key === 'a') {
+                dirX -= 1;
+            }
+
+            if(key === 'd') {
+                dirX += 1;
+            }
+        
+            if(key === 'shift') {
+                run = true;
+            }
+        });
+
+        var speedy = this.speed;
+        if(dirX != 0 && dirY != 0){
+            speedy = this.speed * Math.sin(0.25 * Math.PI);
         }
 
-        if(Array.contains(keyPressed, 'down arrow')) {
-            this.y -= this.ySpeed;
-        }
+        if(run) speedy = speedy * this.runMultiplier;
 
-        if(Array.contains(keyPressed, 'left arrow')) {
-            this.x -= this.xSpeed;
-        }
+        this.x += (dirX * speedy);
+        this.y += (dirY * speedy);
 
-        if(Array.contains(keyPressed, 'right arrow')) {
-            this.x += this.xSpeed;
-        }
+        this.renderable.position.x = this.x / 32;
+        this.renderable.position.y = this.y / 32;
+    },
+
+    _createRenderable: function() {
+        var plane = new THREE.PlaneGeometry(1,1);
+        var material = entitySheet.getMaterial();
+
+        var uv = tileSheet.getUvsFromIndex(this.getSpriteIndexX(), this.getSpriteIndexY());
+
+        plane.faceVertexUvs = [[]];
+        plane.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
+        plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
+
+        return new THREE.Mesh(plane, material);
+    },
+
+    getRenderable: function() {
+        return this.renderable;
     }
+
+    
 });

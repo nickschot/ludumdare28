@@ -123,4 +123,28 @@ var tileTypes = {
         'x': 3,
         'y': 6
     },
+    'ccffe2': {
+        'type': 'sand_left_top',
+        'wall': false,
+        'x': 4,
+        'y': 5
+    },
+    'b4fcd4': {
+        'type': 'sand_right_top',
+        'wall': false,
+        'x': 5,
+        'y': 5
+    },
+    '6ffcac': {
+        'type': 'sand_left_bottom',
+        'wall': false,
+        'x': 4,
+        'y': 6
+    },
+    '8dffbf': {
+        'type': 'sand_right_bottom',
+        'wall': false,
+        'x': 5,
+        'y': 6
+    },
 };
