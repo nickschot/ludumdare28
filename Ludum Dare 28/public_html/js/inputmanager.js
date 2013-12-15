@@ -117,11 +117,18 @@ var InputManager = new Class({
                 self.keysPressed.include(keyPress);
             }
         });
+        $(document).addEvent('keyup', function(e){
+            e.preventDefault();//disables default key actions
+            var key = e.code;
+
+            var keyUnpress = Object.keyOf(inputKeyObject, key);
+            if(keyUnpress){
+                self.keysPressed.erase(keyUnpress);
+            }
+        });
     },
     
     getKeyPresses: function(){
-        var result = this.keysPressed.clone();
-        this.keysPressed.empty();
-        return result;
+        return this.keysPressed;
     }
 });
