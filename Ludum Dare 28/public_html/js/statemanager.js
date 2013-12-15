@@ -1,3 +1,5 @@
+var FOEI = true;
+
 var StateManager = new Class({
     initialize: function(renderer) {
         this.renderer = renderer;
@@ -31,35 +33,52 @@ var GameState = new Class({
     Extends: State,
     initialize: function (stateManager, level) {
         this.stateManager = stateManager;
-        console.log("heey gamestate");
 
         this.count = 0;
         this.chunksOnscene = {};
 
-        console.log("LEVEL: " + level);
         this.chunkManager = new ChunkManager(level);            
 
         this.scene = new THREE.Scene();
         // TODO: doe hier eens niet 800 bij 600
         this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
-        this.camera.position.set(0, 0, -22.5);
-        this.camera.lookAt(this.scene.position);
+        this.camera.position.set(0, 0, 10.5);
+        //this.camera.lookAt(this.scene.position);
         this.scene.add(this.camera);
 
-        var chunks = self.chunkManager.renderChunk();
+        var chunk = this.chunkManager.getChunk(0,0);
 
-        var self = this;
+        this.plane = new THREE.PlaneGeometry(25, 19, 25, 19);
 
-        Array.each(chunks, function(chunk) {
-            var tiles = chunk.getTiles();
-            for(var i = 0; i < tiles.length; i++){
-                for(var j = 0; j < tiles[i].length; j++) {
-                    self.scene.add(tiles[i][j]);
-                }
+        console.log(this.plane.faces);
+
+        console.log(this.plane.faceVertexUvs);
+
+        this.plane.faceVertexUvs = [[]]
+
+        for(var y  = 0; y < chunk.length; y++){
+            for(var x = 0; x < chunk[y].length; x++){
+                var facesIndex1 = (y * chunk.length + x) * 2;
+                var facesIndex2 = facesIndex1 + 1;
+
+                var tileType = chunk[y][x];
+
+                uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
+
+                this.plane.faceVertexUvs[0].push([ uv[1], uv[0], uv[2] ] );
+
+                this.plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
+                
             }
+        }
 
-        });
+        console.log(this.plane.faceVertexUvs);
 
+        this.material = new THREE.MeshBasicMaterial({ map:this.spriteSheet, side: THREE.DoubleSide, transparent: true});
+
+        this.mesh = new THREE.Mesh(this.plane, tileSheet.getMaterial());
+
+        this.scene.add(this.mesh);
     },
     render: function(renderer) {
         renderer.render(this.scene, this.camera);
@@ -94,16 +113,16 @@ var InitState = new Class({
         this.scene.add(this.mesh);
 
         var self = this;
-        
-        console.log("heey initstate");
+
         var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
             onSuccess: function(level) {
-                console.log("Hoi" + level);
                 self.stateManager.switchTo(new GameState(self.stateManager, level));
             },
             onFailure: function(xhr) {
                 console.log('Could not load overworld.json');
-                console.log(xhr);
+                if (FOEI) {
+                    self.stateManager.switchTo(new GameState(self.stateManager, JSON.parse(xhr.response)));
+                }
             }
         }).get();
     },
