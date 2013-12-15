@@ -56,6 +56,7 @@ var InitState = new Class({
         
         var jsonRequest = new Request.JSON({url: 'level/overworld.json', 
             onSuccess: function(level) {
+                console.log("Hoi" + level);
                 self.stateManager.switchTo(new GameState(self.stateManager, level));
             },
             onFailure: function(xhr) {
@@ -81,21 +82,30 @@ var GameState = new Class({
         this.count = 0;
         this.chunksOnscene = {};
 
+        console.log("LEVEL: " + level);
+        this.chunkManager = new ChunkManager(level);            
+
+        this.scene = new THREE.Scene();
+        // TODO: doe hier eens niet 800 bij 600
+        this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
+        this.camera.position.set(0, 0, -22.5);
+        this.camera.lookAt(this.scene.position);
+        this.scene.add(this.camera);
+
+        var chunks = self.chunkManager.renderChunk();
+
         var self = this;
 
-        var jsonRequest = new Request.JSON({url: 'level/overworld.json', onSuccess: function(level) {
-            self.chunkManager = new ChunkManager(level);            
+        Array.each(chunks, function(chunk) {
+            var tiles = chunk.getTiles()
+            for(var i = 0; i < tiles.length; i++){
+                for(var j = 0; j < tiles[i].length; j++) {
+                    self.scene.add(tiles[i][j]);
+                }
+            }
 
-            self.scene = new THREE.Scene();
-            // TODO: doe hier eens niet 800 bij 600
-            self.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
-            self.camera.position.set(0, 0, -22.5);
-            self.camera.lookAt(self.scene.position);
-            self.scene.add(self.camera);
+        });
 
-            var chunks = self.chunkManager.renderChunk();
-
-         }}).get();
     },
     render: function(renderer) {
         renderer.render(this.scene, this.camera);

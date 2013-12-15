@@ -26,5 +26,9 @@ var Chunk = new Class({
         }
         
         return result;
+    },
+
+    getTiles: function() {
+        return this.tiles;
     }
 });
