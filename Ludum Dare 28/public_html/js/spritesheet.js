@@ -5,11 +5,12 @@ var SpriteSheet = new Class({
         this.xSprites = xSprites;
         this.ySprites = ySprites;
 
-        this.material = new THREE.MeshBasicMaterial({ map:self.spriteSheet, side: THREE.DoubleSide, transparent: true});
+        this.material = new THREE.MeshBasicMaterial({ map:this.spriteSheet, side: THREE.DoubleSide, transparent: true, wireframe: false});
+
     },
 
     // BOZE CODE, niet aanzitten
-    getGeometryFromSpriteIndex: function (x, y, xSize, ySize) {
+    getUvsFromIndex: function (x, y) {
         var uDelta = 1.0 / this.xSprites;
         var vDelta = 1.0 / this.ySprites;
 
@@ -24,17 +25,11 @@ var SpriteSheet = new Class({
         var faceuv = [
             new THREE.Vector2(uMin, vMin),
             new THREE.Vector2(uMin, vMax),
-            new THREE.Vector2(uMax, vMin),
             new THREE.Vector2(uMax, vMax),
+            new THREE.Vector2(uMax, vMin),
         ];
 
-        var planeGeo = new THREE.PlaneGeometry(xSize, ySize);
-
-        planeGeo.faceVertexUvs = [[]];
-        planeGeo.faceVertexUvs[0].push([faceuv[0], faceuv[2], faceuv[1]]);
-        planeGeo.faceVertexUvs[0].push([faceuv[2].clone(), faceuv[3], faceuv[1].clone()]);
-
-        return planeGeo;
+        return faceuv;
     },
 
 
@@ -46,3 +41,5 @@ var SpriteSheet = new Class({
         return this.material;
     }
 });
+
+var tileSheet = new SpriteSheet('img/game/spritesheet.png', 8, 8);

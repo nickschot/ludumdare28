@@ -30,13 +30,30 @@ var ChunkManager = new Class({
     getChunkHeight: function(){
         return this.chunks[0][0].length;
     },
+
+    getChunk: function(x, y){
+        var curr = this.chunks[y][x];
+        var res = new Array();
+
+        for(var j = 0; j < curr.length; j++){
+            res[j] = new Array();
+            for(var i = 0; i < curr[j].length; i++){
+                res[j][i] = this._getTileType(curr[j][i]);
+            }
+        }
+        return res;
+    },
     
     renderChunk: function(x,y){
-        if(x < this.getLevelWidth() && y < this.GetLevelHeight()){
+        if(x < this.getLevelWidth() && y < this.getLevelHeight()){
             var tiles = new Array();
             for(var i = 0; i < this.getChunkHeight(); i++){
+                tiles[i] = new Array();
                 for(var j = 0; j < this.getChunkWidth(); j++){
-                    tiles[i][j] = _createGeometry(this._getTileType(this.chunks[y][x]), CHUNK_SIZE_X * x + j, CHUNK_SIZE_Y * y + i);
+                    var tile = this.chunks[y][x][i][j];
+                    var tileType = this._getTileType(tile);
+                    var geometry = this._createGeometry(tileType, CHUNK_SIZE_X * x + j, CHUNK_SIZE_Y * y + i);
+                    tiles[i][j] = geometry;
                 }
             }
             return new Chunk(tiles);
@@ -48,22 +65,26 @@ var ChunkManager = new Class({
     _createGeometry: function(tileType, x, y){
         if(!Object.contains(this.spriteSheetCache, tileType.spriteSheet)){
             // 8 bij 8 is nu hardcoded, dat hoort niet :(
-            this.spriteSheetCache[tile.spriteSheet] = new SpriteSheet(tile.spriteSheet, 8, 8);
+            this.spriteSheetCache[tileType.spriteSheet] = new SpriteSheet(tileType.spriteSheet, 8, 8);
         }
 
-        var geometry = this.spriteSheetCache[tile.spriteSheet].getGeometryFromSpriteIndex(tile.x, tile.y);
-        var material = this.spriteSheetCache[tile.spriteSheet].getMaterial();
+        var geometry = this.spriteSheetCache[tileType.spriteSheet].getGeometryFromSpriteIndex(tileType.x, tileType.y, 1, 1);
+
+        var matrix = new THREE.Matrix4();
+
+        var material = this.spriteSheetCache[tileType.spriteSheet].getMaterial();
 
         var mesh = new THREE.Mesh(geometry, material);
 
-        mesh.matrix.setPositon(new THREE.Vector3(x, y, 0.0));
+        mesh.position.set(x, y, 0.0);
 
+//        mesh.matrix.setPosition(new THREE.Vector3(x, y, 0.0));
         return mesh;
     },
     
     _getTileType: function(color){
         var type;
-        if(Object.contains(tileTypes, color) === true){
+        if(Array.contains(Object.keys(tileTypes), color) === true){
             type = tileTypes[color];
         }
         return type;

@@ -14,9 +14,14 @@ var Object = new Class({
         this.isWalkable = isWalkable;
     },
     
-    inObject: function(rect2) {
+    inObjectPlane: function(rect2) {
         var rect = this.toPlane();
         return rect.planeInPlane(rect2);
+    },
+    
+    inObjectCircle: function(circle) {
+        var rect = this.toPlane();
+        return rect.circleInPlane(circle);
     },
     
     toPlane: function() {

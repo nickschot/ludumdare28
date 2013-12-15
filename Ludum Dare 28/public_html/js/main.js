@@ -45,7 +45,7 @@ var Main = new Class({
     },
 
     _getRenderer: function() {
-        return new THREE.WebGLRenderer({antialias:true});
+        return new THREE.WebGLRenderer({});
     },
 
     render: function() {

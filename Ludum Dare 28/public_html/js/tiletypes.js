@@ -14,14 +14,14 @@ var tileTypes = {
     'ffff00': {
         'type': 'path_vertical',
         'wall': false,
-        'x': 2,
-        'y': 1
+        'x': 1,
+        'y': 2
     },
     'ff8800': {
         'type': 'path_horizontal',
         'wall': false,
-        'x': 2,
-        'y': 0
+        'x': 0,
+        'y': 2
     },
     'ffbb00': {
         'type': 'path_intersection',
@@ -53,5 +53,11 @@ var tileTypes = {
         'x': 0,
         'y': 1
     },
+    '0000ff': {
+        'type': 'test_tile',
+        'wall': true,
+        'x': 2,
+        'y': 0
+    }
 
 };
