@@ -5,7 +5,7 @@ var SpriteSheet = new Class({
         this.xSprites = xSprites;
         this.ySprites = ySprites;
 
-        this.material = new THREE.MeshBasicMaterial({ map:this.spriteSheet, side: THREE.DoubleSide, transparent: true, wireframe: false});
+        this.material = new THREE.MeshBasicMaterial({ map:this.spriteSheet, side: THREE.DoubleSide, transparent: true, wireframe: false, blending: THREE.NormalBlending, opacity: 1.0});
 
     },
 
@@ -43,3 +43,4 @@ var SpriteSheet = new Class({
 });
 
 var tileSheet = new SpriteSheet('img/game/spritesheet.png', 8, 8);
+var entitySheet = new SpriteSheet('img/game/entitysheet.png', 8, 8);
