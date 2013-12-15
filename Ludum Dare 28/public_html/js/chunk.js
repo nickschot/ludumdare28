@@ -43,5 +43,9 @@ var Chunk = new Class({
                           new Point(point.x + width, point.y), 
                           new Point(point.x + width, point.y + height), 
                           new Point(point.x, point.y + height));
+    },
+
+    getTiles: function() {
+        return this.tiles;
     }
 });
