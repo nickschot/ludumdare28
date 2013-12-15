@@ -1,79 +1,52 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Singleton class that manages all chunks
+ * @type Class
  */
 
+var CHUNK_SIZE_X = 25;
+var CHUNK_SIZE_Y = 19;
+
 var Level = new Class({
-    initialize: function(chunks) {
-        this.chunks = chunks; //:: [[Chunk]] list of rows
+    /**
+     * @param chunks - An array containing all chunks
+     */
+    initialize: function(tiles_array){
+        this.entities = new Array();
+        this.tileTypeChunks = new Array();
+        for(var y = 0; y < tiles_array.length; y++){
+            this.tileTypeChunks[y] = new Array();
+            for(var x = 0; x < tiles_array[y].length; x++){
+                var tile = tiles_array[y][x];
+                this.tileTypeChunks[y][x] = this._getTileType(tile);
+            }
+        }
+    },
+
+    addEntity: function(entity) {
+        this.entities.append(entity);
+    },
+
+    getEntities: function() {
+        return this.entities;
     },
     
-    entityInChunks: function(entity) {
-        var result = new Array();
-        
-        for(var i = 0; i < this.chunks.length; i++) {
-            if(this.chunks[i].containsEntity(entity)) {
-                result.push(this.chunks[i]);
-            }
-        }
-        
-        return result;
+    getLevelWidth: function(){
+        return this.tileTypeChunks[0].length;
     },
     
-    circleInChunks: function(circle) {
-        var result = new Array();
-        
-        for(var i = 0; i < this.chunks.length; i++) {
-            var rect = this.chunks[i].toPlane();
-            if(circle.doesPlaneIntersect(rect)) {
-                result.push(this.chunks[i]);
-            }
-        }
-        
-        return result;
+    getLevelHeight: function(){
+        return this.tileTypeChunks.length;
+    },
+
+    getLevel: function() {
+        return this.tileTypeChunks;
     },
     
-    planeInChunks: function(plane) {
-        var result = new Array();
-        
-        for(var i = 0; i < this.chunks.length; i++) {
-            var rect = this.chunks[i].toPlane();
-            if(plane.doesPlaneIntersect(rect)) {
-                result.push(this.chunks[i]);
-            }
+    _getTileType: function(color){
+        var type;
+        if(Array.contains(Object.keys(tileTypes), color) === true){
+            type = tileTypes[color];
         }
-        
-        return result; 
-    },
- 
-    whatIsAtPlane: function(plane) {
-        var result = new Array();
-        var chunks = this.planeInChunks(plane);
-        
-        for(var j = 0; j < chunks.length; j++) {
-        
-            for(var i = 0; i < chunks[j].entities.length; i++) {
-                if(chunks[j].entities[i].inObjectPlane(plane)) {
-                    result.push(chunks[j].entities[i]);
-                }
-            }
-        }
-        return result;
-    },
-    
-    whatIsAtCircle: function(circle) {
-        var result = new Array();
-        var chunks = this.circleInChunks(circle);
-        
-        for(var j = 0; j < chunks.length; j++) {
-        
-            for(var i = 0; i < chunks[j].entities.length; i++) {
-                if(chunks[j].entities[i].inObjectCircle(circle)) {
-                    result.push(chunks[j].entities[i]);
-                }
-            }
-        }
-        return result;
+        return type;
     }
 });

@@ -14,33 +14,16 @@ if __name__ == "__main__":
     rgb_im = im.convert('RGB')
     (width, height) = im.size
 
-    chunkX, chunkY = (int(math.ceil(width / 25)), int(math.ceil(height / 19)))
-
-    chunks = []
-    for j in range(chunkY):
+    result = []
+    for y in range(height):
         currentArray = []
-        for i in range(chunkX):
-            xMin = i * 25
-            xMax = (i+1) * 25
-            yMin = j * 19
-            yMax = (j+1) * 19
-
-            arr = []
-            for y in range(yMin, yMax):
-                inner_arr = []
-                for x in range(xMin, xMax):
-                    if x < width and y < height:
-                        r, g, b = rgb_im.getpixel((x, y))
-                        kleurtje = '%02x%02x%02x' % (r, g, b)
-                        inner_arr.append(kleurtje)
-                    else:
-                        inner_arr.append(0)
-                arr.append(inner_arr)
-            
-            currentArray.append(arr)
-
-        chunks.append(currentArray)
+        for x in range(width):
+            r, g, b = rgb_im.getpixel((x, y))
+            kleurtje = '%02x%02x%02x' % (r, g, b)
+            currentArray.append(kleurtje)
+                    
+        result.append(currentArray)
 
     f = open(sys.argv[2], 'w+')
-    f.write(json.dumps(chunks))
+    f.write(json.dumps(result))
     f.close

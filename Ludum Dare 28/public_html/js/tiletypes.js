@@ -68,6 +68,59 @@ var tileTypes = {
         'spriteSheet': 'lalalal',
         'x': 2,
         'y': 0
-    }
-
+    },
+    'fdffcc': {
+        'type': 'sand',
+        'wall': false,
+        'x': 0,
+        'y': 4
+    },
+    'caff9b': {
+        'type': 'grass_top_to_sand_bottom',
+        'wall': false,
+        'x': 0,
+        'y': 5
+    },
+    'b6ff9b': {
+        'type': 'sand_left_to_grass_right',
+        'wall': false,
+        'x': 1,
+        'y': 5
+    },
+    '5cff1f': {
+        'type': 'grass_left_to_sand_right',
+        'wall': false,
+        'x': 0,
+        'y': 6
+    },
+    '89fd5d': {
+        'type': 'sand_top_to_grass_bottom',
+        'wall': false,
+        'x': 1,
+        'y': 6
+    },
+    'f9ffcc': {
+        'type': 'grass_left_top',
+        'wall': false,
+        'x': 2,
+        'y': 5
+    },
+    'f3ff9b': {
+        'type': 'grass_right_top',
+        'wall': false,
+        'x': 3,
+        'y': 5
+    },
+    'd9ff9b': {
+        'type': 'grass_left_bottom',
+        'wall': false,
+        'x': 2,
+        'y': 6
+    },
+    'e7ff9b': {
+        'type': 'grass_right_bottom',
+        'wall': false,
+        'x': 3,
+        'y': 6
+    },
 };

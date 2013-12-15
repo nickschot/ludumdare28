@@ -31,52 +31,48 @@ var State = new Class({
 
 var GameState = new Class({
     Extends: State,
-    initialize: function (stateManager, level) {
+    initialize: function (stateManager, level_array) {
         this.stateManager = stateManager;
 
         this.count = 0;
         this.chunksOnscene = {};
 
-        this.chunkManager = new ChunkManager(level);            
+        this.level = new Level(level_array);            
 
         this.scene = new THREE.Scene();
         // TODO: doe hier eens niet 800 bij 600
         this.camera =  new THREE.PerspectiveCamera(45, 800 / 600, 1, 100);
 
-        this.camera.position.set(10, -10, 22.5);
+        this.camera.position.set(0, -10, 25.5);
         //this.camera.lookAt(this.scene.position);
         this.scene.add(this.camera);
 
-        this.addChunksToScene(this.chunkManager.getChunks());
+        this.addChunksToScene(this.level);
     },
 
-    addChunksToScene: function(chunks) {
-        for(var y = 0; y < chunks.length; y++){
-            for(var x = 0; x < chunks[y].length; x++){
-                var plane = new THREE.PlaneGeometry(25, 19, 25, 19);
-                plane.faceVertexUvs = [[]];
+    addChunksToScene: function(level) {
+        var plane = new THREE.PlaneGeometry(level.getLevelWidth(), level.getLevelHeight(), level.getLevelWidth(), level.getLevelHeight()); 
 
-                for(var j = 0; j < chunks[y][x].length; j++){
-                    for(var i = 0; i < chunks[y][x][j].length; i++){
-                        var tileType = chunks[y][x][j][i];
+        var level = level.getLevel();
+        plane.faceVertexUvs = [[]];
 
-                        var uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
+        for(var y = 0; y < level.length; y++){
+            for(var x = 0; x < level[y].length; x++){
+                var tileType = level[y][x];
 
-                        plane.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
+                console.log(tileType);
 
-                        plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
-                    }
-                }
+                var uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
 
-                var mesh = new THREE.Mesh(plane, tileSheet.getMaterial());
-                mesh.position.x = x * 25;
-                mesh.position.y = -1 * y * 19;
+                plane.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
 
-                console.log(mesh);
-
-                this.scene.add(mesh);
+                plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);                
             }
         }
+        var mesh = new THREE.Mesh(plane, tileSheet.getMaterial());
+
+        console.log(mesh);
+        this.scene.add(mesh);
     },
     render: function(renderer) {
         renderer.render(this.scene, this.camera);
