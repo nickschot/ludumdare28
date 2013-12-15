@@ -49,7 +49,7 @@ var WizardEntity = new Class({
         
         var run = false;
         Array.each(keyPressed, function(key) {
-            if(key == 'w'){
+            if(key === 'w'){
                 dirY += 1;
             }
 
@@ -71,7 +71,7 @@ var WizardEntity = new Class({
         });
 
         var speedy = this.speed;
-        if(dirX != 0 && dirY != 0){
+        if(dirX !== 0 && dirY !== 0){
             speedy = this.speed * Math.sin(0.25 * Math.PI);
         }
 
