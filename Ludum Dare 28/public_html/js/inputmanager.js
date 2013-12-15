@@ -8,6 +8,7 @@ var inputKeyObject = {
     "pause/break": 19,
     "caps lock": 20,
     "escape": 27,
+    "spacebar": 32,
     "page up": 33,
     "page down": 34,
     "end": 35,
@@ -107,6 +108,7 @@ var InputManager = new Class({
     setBinds: function(){
         var self = this;
         $(document).addEvent('keydown', function(e){
+            e.preventDefault();//disables default key actions
             var key = e.code;
             var keyPress = Object.keyOf(inputKeyObject, key);
             if(keyPress){
@@ -118,16 +120,19 @@ var InputManager = new Class({
     _fireAction: function(key){
         switch(key){
             case 'w':
-                console.log(key);
+                
                 break;
             case 'a':
-                console.log(key);
+                
                 break;
             case 's':
-                console.log(key);
+                
                 break;
             case 'd':
-                console.log(key);
+                
+                break;
+            case 'spacebar':
+                
                 break;
             default:
                 console.log('No action found for: '+key);
