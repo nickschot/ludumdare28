@@ -26,7 +26,13 @@ var Entity = new Class({
         return 0;
     },
 
-    getRenderable: function() {}
+    getRenderable: function() {
+
+    },
+
+    alive: function() {
+        return true;
+    }
 });
 
 var WizardEntity = new Class({
@@ -35,10 +41,17 @@ var WizardEntity = new Class({
     initialize: function(id, x, y, height, width, isWalkable, level){
         this.parent(x,y,height,width,isWalkable);
         this.inputManager = new InputManager();
-        this.renderable = this._createRenderable();
 
-        this.x = x;
-        this.y = y;
+        var wizardAndCursor = this._createRenderable();
+
+        this.group = new THREE.Object3D();
+        this.group.add(wizardAndCursor.wizard);
+        this.group.add(wizardAndCursor.cursor);
+
+        this.group.x = x;
+        this.group.y = y;
+
+        this.cursor = wizardAndCursor.cursor;
 
         this.runMultiplier = 2.5;
         this.speed = 0.10;
@@ -48,7 +61,9 @@ var WizardEntity = new Class({
         this.currentSpeed = 0.0;
 
         this.fireCooldown = 0;
-        this.maxCooldown = 30;
+        this.maxCooldown = 15;
+
+        this.projectileSpeed = 0.5;
     },
 
     update: function(level) {
@@ -58,10 +73,18 @@ var WizardEntity = new Class({
 
         var dirX = 0;
         var dirY = 0;
+
+
         
         var run = false;
 
         var self = this;
+
+        var pos = self.inputManager.getCursorPosition();
+        var vector = new THREE.Vector2(pos.x - self.group.position.x, pos.y - self.group.position.y);
+
+        vector.normalize();
+
         Array.each(keyPressed, function(key) {
             if(key === 'w'){
                 dirY += 1;
@@ -85,7 +108,10 @@ var WizardEntity = new Class({
 
             if(key === 'spacebar' && self.fireCooldown == 0) {
                 console.log("spaaace");
-                self.level.addEntity(new Projectile("", 0, 0, 1.0, 1.0, true, this.level, 0.05, 0.05));
+
+                var distance = Math.sqrt(Math.pow((self.group.position.x + pos.x), 2) + Math.pow((self.group.position.x + pos.x), 2));
+
+                self.level.addEntity(new Projectile("", self.group.position.x, self.group.position.y, 1.0, 1.0, true, self.level, vector.x * self.projectileSpeed, vector.y * self.projectileSpeed));
                 self.fireCooldown = self.maxCooldown;
             }
         });
@@ -99,30 +125,47 @@ var WizardEntity = new Class({
 
         this.currentSpeed = (this.currentSpeed + speedy) / 2.0;
 
-        this.x += (dirX * this.currentSpeed);
-        this.y += (dirY * this.currentSpeed);
+        this.group.position.x += (dirX * this.currentSpeed);
+        this.group.position.y += (dirY * this.currentSpeed);
 
-        this.renderable.position.x = this.x;
-        this.renderable.position.y = this.y;
+        var xrot = Math.acos(vector.x);
+
+        this.cursor.rotation.z = (vector.y <= 0 ? Math.PI * 2 -  xrot : xrot) - 0.25 * Math.PI;
+
 
         if(this.fireCooldown > 0) this.fireCooldown--;
     },
 
     _createRenderable: function() {
-        var plane = new THREE.PlaneGeometry(1,1);
-        var material = entitySheet.getMaterial();
+        var wizardGeo = new THREE.PlaneGeometry(1,1);
+        var wizardMaterial = entitySheet.getMaterial();
 
         var uv = tileSheet.getUvsFromIndex(this.getSpriteIndexX(), this.getSpriteIndexY());
 
-        plane.faceVertexUvs = [[]];
-        plane.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
-        plane.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
+        wizardGeo.faceVertexUvs = [[]];
+        wizardGeo.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
+        wizardGeo.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
 
-        return new THREE.Mesh(plane, material);
+        var wizardMesh = new THREE.Mesh(wizardGeo, wizardMaterial);
+
+        var cursorGeo = new THREE.PlaneGeometry(1,1);
+
+        cursorGeo.applyMatrix(new THREE.Matrix4().makeTranslation(0.5, 0.5, 0.0));
+
+        var cursorTexture = new THREE.ImageUtils.loadTexture("img/game/ui/cursor_weapon.png");
+        var cursorMat = new THREE.MeshBasicMaterial({map:cursorTexture, transparent:true});
+
+        var cursorMesh = new THREE.Mesh(cursorGeo, cursorMat);
+
+        return { wizard: wizardMesh, cursor: cursorMesh } ;
     },
 
     getRenderable: function() {
-        return this.renderable;
+        return this.group;
+    },
+
+    alive: function() {
+        return true;
     }
 });
 
@@ -133,13 +176,27 @@ var Projectile = new Class({
         this.parent(x,y,height,width,isWalkable, level);
 
         this.mesh = this._createRenderable();
+        this.mesh.position.x = x;
+        this.mesh.position.y = y;
 
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
+
+        this.age = 0;
+        this.maxAge = 20;
     },
 
     _createRenderable: function() {
-        return new THREE.Mesh(new THREE.PlaneGeometry(1,1), entitySheet.getMaterial());
+        var geo = new THREE.PlaneGeometry(1,1); 
+
+        var uv = entitySheet.getUvsFromIndex(0, 2);
+        geo.faceVertexUvs = [[]];
+        geo.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
+        geo.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
+        
+        var mesh = new THREE.Mesh(geo, entitySheet.getMaterial());
+
+        return mesh;
     },
 
     getRenderable: function() {
@@ -147,8 +204,17 @@ var Projectile = new Class({
     },
 
     update: function() {
-        this.mesh.position.x += this.xSpeed;
-        this.mesh.position.y += this.ySpeed;
+        if(this.age < this.maxAge) {
+            this.mesh.position.x += this.xSpeed;
+            this.mesh.position.y += this.ySpeed;
+            this.age++;
+        }
+
+        
+    },
+
+    alive: function() {
+        return this.age < this.maxAge;
     }
 });
     

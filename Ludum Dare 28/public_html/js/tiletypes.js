@@ -63,11 +63,11 @@ var tileTypes = {
         'y': 1
     },
     '0000ff': {
-        'type': 'test_tile',
+        'type': 'water',
         'wall': true,
         'spriteSheet': 'lalalal',
-        'x': 2,
-        'y': 0
+        'x': 1,
+        'y': 4
     },
     'fdffcc': {
         'type': 'sand',
