@@ -209,7 +209,7 @@ var tileTypes = {
     },
     '360050': {
         'type': 'water_left_bottom_sand',
-        'wall': false,
+        'wall': true,
         'x': 4,
         'y': 5
     },

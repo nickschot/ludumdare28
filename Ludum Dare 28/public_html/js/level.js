@@ -86,10 +86,12 @@ var Level = new Class({
                 
                // console.log("x: " + x + " y: " + y);
                 result.push(new Tile("tile" + tX + "," + tY, tX, tY, tileHeight, tileWidth, !this.isWall(x,y), this));
+
+                if(result.length > 0) console.log("Ik heb tiles gevonden");
             }
             
         }
-                console.log(result);
+                //console.log(result);
         return result;
     },
     

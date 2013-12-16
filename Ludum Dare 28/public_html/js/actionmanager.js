@@ -56,15 +56,21 @@ function _whatWouldHitRect(action) {
             objectsInHitBoxEC.push(objectsInEC[i]);
         }
     }
+
+    if(objectsInHitBoxEC.length > 0) console.log("objecsInHitBoxEc");
     
    // console.log(objectsInHitBoxEC);
     var bounces = new Array();
     //Third calculate which nearest objects their hitboxes lie within object hitbox
+
+    console.log("entity: " + action.getEntity());
     for(var i = 0; i < objectsInHitBoxEC.length; i++) {
         if(action.getEntity().inObjectPlane(objectsInHitBoxEC[i].toPlane())) {
             bounces.push(objectsInHitBoxEC[i]);
         }
     }
+
+    if(bounces.length > 0) console.log("bounces");
 
     if(bounces.length === 0) {
         result = new ResultNothing();

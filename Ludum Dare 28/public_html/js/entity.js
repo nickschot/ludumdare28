@@ -28,6 +28,11 @@ var Entity = new Class({
 
     },
 
+    inObjectPlane: function(plane) {
+        console.log('inObjectPlane (entity)');
+        return this.parent.inObjectPlane(plane);
+    },
+
     alive: function() {
         return true;
     }
@@ -105,7 +110,6 @@ var WizardEntity = new Class({
             }
 
             if(key === 'spacebar' && self.fireCooldown == 0) {
-                console.log("spaaace");
 
                 var distance = Math.sqrt(Math.pow((self.group.position.x + pos.x), 2) + Math.pow((self.group.position.x + pos.x), 2));
 
@@ -131,6 +135,8 @@ var WizardEntity = new Class({
             var moveAction = new ActionMoveHero(newX, newY, this.height, this.width, this, this.level);
             var resultAction = whatHappensIf(moveAction);
 
+
+            console.log(resultAction.isNothing);
             if(resultAction.isNothing) {
                 this.group.position.x = newX;
                 this.group.position.y = newY;
@@ -177,7 +183,7 @@ var WizardEntity = new Class({
 
     alive: function() {
         return true;
-    }
+    },
     /*
     getId: function() {
         return this.parent.getId();
@@ -213,12 +219,13 @@ var WizardEntity = new Class({
     
     getWidth: function() {
         return this.parent.getWidth();
-    },
+    },*/
     
-    inObjectPlane: function(plane) {
-        return this.parent.inObjectPlane(plane);
+    inObjectPlane: function(rect2) {
+        var rect = this.toPlane();
+        return rect.doesPlaneIntersect(rect2);
     },
-    
+    /*
     inObjectCircle: function(circle) {
         return this.parent.inObjectCircle(circle);
     },
@@ -280,4 +287,53 @@ var Projectile = new Class({
         return this.age < this.maxAge;
     }
 });
+
+var SwordMan = new Class({
+    Extends: Entity,
+    initialize: function(id, x, y, height, width, isWalkable, level) {
+        this.parent(x,y,height,width,isWalkable, level);
+
+        this.renderable = this._createRenderable();
+
+        this.renderable.position.x;
+        this.renderable.position.y;
+
+        this.level = level;
+
+        this.speed = 0.125;
+
+        this.direction = new THREE.Vector2(1.0, 1.0);
+
+        this.direction.normalize();
+    },
+
+    alive: function() {
+        return true;
+    },
+
+    update: function() {
+        this.renderable.position.x += this.direction.x * this.speed;
+        this.renderable.position.y += this.direction.y * this.speed;
+    },
+
+    _createRenderable: function() {
+        var geo = new THREE.PlaneGeometry(1,1);
+
+        var uv = entitySheet.getUvsFromIndex(0, 3);
+
+        geo.faceVertexUvs = [[]];
+        geo.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
+        geo.faceVertexUvs[0].push([uv[0].clone(), uv[3], uv[2].clone()]);
+
+                
+        var mesh = new THREE.Mesh(geo, entitySheet.getMaterial());
+
+        return mesh;
+    },
+
+    getRenderable: function() {
+        return this.renderable;
+    }
+});
+    
     
