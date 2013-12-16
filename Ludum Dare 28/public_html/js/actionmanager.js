@@ -47,9 +47,10 @@ function _whatWouldHitRect(action) {
     var hitboxEvaluationCircle = new Circle(new Point(action.getX(), action.getY()), hitboxEvaluationDistance);
     var objectsInHitBoxEC = new Array();
     
+    console.log(objectsInEC);
     //Second calculate which objects their hitboxes lie within hitboxEvaluationCircle
     for(var i = 0; i < objectsInEC.length; i++) {
-        if(objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
+        if(!objectsInEC[i].isWalkable() && objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
             objectsInHitBoxEC.push(objectsInEC[i]);
         }
     }
@@ -82,7 +83,7 @@ function _whatWouldHitCircle(action) {
     
     //Second calculate which objects their hitboxes lie within hitboxEvaluationCircle
     for(var i = 0; i < objectsInEC.length; i++) {
-        if(objectsInEC[i].isWalkable() && objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
+        if(!objectsInEC[i].isWalkable() && objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
             bounces.push(objectsInEC[i]);
         }
     }
