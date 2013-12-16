@@ -82,7 +82,7 @@ var WizardEntity = new Class({
         var vector = new THREE.Vector2(pos.x - self.group.position.x, pos.y - self.group.position.y);
 
         vector.normalize();
-
+        
         Array.each(keyPressed, function(key) {
             if(key === 'w'){
                 dirY += 1;
@@ -113,10 +113,11 @@ var WizardEntity = new Class({
                 self.fireCooldown = self.maxCooldown;
             }
         });
+
         
         if(dirX !== 0 || dirY !== 0) {
             var speedy = this.speed;
-            if(dirX != 0 && dirY != 0){
+            if(dirX !== 0 && dirY !== 0){
                 speedy = this.speed * Math.sin(0.25 * Math.PI);
             }
 
@@ -124,28 +125,19 @@ var WizardEntity = new Class({
 
             this.currentSpeed = (this.currentSpeed + speedy) / 2.0;
 
-            var newX = this.getX() + (dirX * this.currentSpeed);
-            var newY = this.getY() + (dirY * this.currentSpeed);
-
+            var newX = this.group.position.x + (dirX * this.currentSpeed);
+            var newY = this.group.position.y + (dirY * this.currentSpeed);
 
             var moveAction = new ActionMoveHero(newX, newY, this.height, this.width, this, this.level);
             var resultAction = whatHappensIf(moveAction);
 
             if(resultAction.isNothing) {
-                this.setX(newX);
-                this.setY(newY);
+                this.group.position.x = newX;
+                this.group.position.y = newY;
 
-                this.getRenderable().position.x = this.getX() / 32;
-                this.getRenderable().position.y = this.getY() / 32;
-            }
+             }
         }
-
-        if(run) speedy = speedy * this.runMultiplier;
-
-        this.currentSpeed = (this.currentSpeed + speedy) / 2.0;
-
-        this.group.position.x += (dirX * this.currentSpeed);
-        this.group.position.y += (dirY * this.currentSpeed);
+        
 
         var xrot = Math.acos(vector.x);
 

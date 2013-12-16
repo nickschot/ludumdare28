@@ -149,7 +149,7 @@ var ActionMove = new Class({
     initialize: function(x, y, height, width, entity, level) {
         this.parent(entity, level);
         this.x = x;
-        this.y = y;
+        this.y = -y;
         this.height = height;
         this.width = width;
     },  
@@ -161,15 +161,7 @@ var ActionMove = new Class({
     getY: function() {
         return this.y;
     },
-    /*
-    getEntity: function() {
-        return this.parent.getEntity();
-    },
-        
-    getLevel: function() {
-        return this.parent.getLevel();
-    },
-    */
+    
     getHeight: function() {
         return this.height;
     },
@@ -201,42 +193,10 @@ var ActionMoveHero = new Class({
     initialize: function(x, y, height, width, entity, level) {
         this.parent(x, y, height, width, entity, level);
     },
-    /*
-    getX: function() {
-        return this.parent.getX();
-    },
-    
-    getY: function() {
-        return this.parent.getY();
-    },
-    
-    getEntity: function() {
-        return this.parent.getEntity();
-    },
-        
-    getLevel: function() {
-        return this.parent.getLevel();
-    },
-    
-    getHeight: function() {
-        return this.parent.getHeight();
-    },
-    
-    getWidth: function() {
-        return this.parent.getWidth();
-    },
-    
-    isMove: function() {
-        return this.parent.isMove();
-    },
-    */
+
     isActionMoveHero: function() {
         return true;
     }
-    /*
-    toPlane: function () {
-        return this.parent.toPlane();
-    }*/
 });
 
 var ActionMoveNPC = new Class({
@@ -244,40 +204,8 @@ var ActionMoveNPC = new Class({
     initialize: function(x, y, height, width, entity, level) {
         this.parent(x, y, height, width, entity, level);
     },
-    /*
-    getX: function() {
-        return this.parent.getX();
-    },
-    
-    getY: function() {
-        return this.parent.getY();
-    },
-    
-    getEntity: function() {
-        return this.parent.getEntity();
-    },
-        
-    getLevel: function() {
-        return this.parent.getLevel();
-    },
-    
-    getHeight: function() {
-        return this.parent.getHeight();
-    },
-    
-    getWidth: function() {
-        return this.parent.getWidth();
-    },
-    
-    isMove: function() {
-        return this.parent.isMove();
-    },
-    */
+  
     isActionMoveNPC: function() {
         return true;
     }
-    /*
-    toPlane: function () {
-        return this.parent.toPlane();
-    }*/
 });

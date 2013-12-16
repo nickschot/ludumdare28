@@ -36,8 +36,10 @@ function _whatWouldHitRect(action) {
     var evaluationCircle = new Circle(new Point(action.getX(), action.getY()), evaluationDistance);
     //First calculate which objects their origins lie within evaluationcircle
     var objectsInEC = action.getLevel().getObjectsOriginInCircle(evaluationCircle);
+    
+    
+    
     //Remove yourself
-
     objectsInEC = objectsInEC.filter(function(item, index) {
         var actionId = action.getEntity().getId();
         var itemId = item.getId();
@@ -47,14 +49,15 @@ function _whatWouldHitRect(action) {
     var hitboxEvaluationCircle = new Circle(new Point(action.getX(), action.getY()), hitboxEvaluationDistance);
     var objectsInHitBoxEC = new Array();
     
-    console.log(objectsInEC);
+   // console.log(objectsInEC);
     //Second calculate which objects their hitboxes lie within hitboxEvaluationCircle
     for(var i = 0; i < objectsInEC.length; i++) {
         if(!objectsInEC[i].isWalkable() && objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
             objectsInHitBoxEC.push(objectsInEC[i]);
         }
     }
-    console.log(objectsInHitBoxEC);
+    
+   // console.log(objectsInHitBoxEC);
     var bounces = new Array();
     //Third calculate which nearest objects their hitboxes lie within object hitbox
     for(var i = 0; i < objectsInHitBoxEC.length; i++) {

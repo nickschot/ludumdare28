@@ -15,7 +15,7 @@ var tileTypes = {
     },
     'ffff00': {
         'type': 'path_vertical',
-        'wall': true,
+        'wall': false,
         'spriteSheet': 'img/game/spritesheet.png',
         'x': 1,
         'y': 2
@@ -64,7 +64,7 @@ var tileTypes = {
     },
     '0000ff': {
         'type': 'water',
-        'wall': true,
+        'wall': false,
         'spriteSheet': 'lalalal',
         'x': 1,
         'y': 4

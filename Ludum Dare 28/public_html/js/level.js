@@ -47,7 +47,6 @@ var Level = new Class({
     
     getObjectsOriginInCircle: function(circle) {
         var objects = new Array();
-        
         objects.append(this.getEntities()).append(this.tilesFromCircle(circle));
         var result = new Array();
         
@@ -61,13 +60,14 @@ var Level = new Class({
     },
     
     tilesFromCircle: function(circle) {
-
-        return this.tilesFromRectangle(new Plane(
+        var rectA = new Plane(
                     new Point(circle.p.x - circle.radius, circle.p.y - circle.radius),
                     new Point(circle.p.x + circle.radius, circle.p.y - circle.radius),
                     new Point(circle.p.x + circle.radius, circle.p.y + circle.radius),
                     new Point(circle.p.x - circle.radius, circle.p.y + circle.radius)
-                ));;
+                );
+                
+        return this.tilesFromRectangle(rectA);
     },
     
     tilesFromRectangle: function(rect) {
@@ -78,15 +78,18 @@ var Level = new Class({
         var xMax = Math.min(this.getLevelWidth(), Math.floor(rect.p3.x));
         var yMax = Math.min(this.getLevelHeight(), Math.floor(rect.p3.y));
         
+
         for(y; y < yMax; y++) {
             for(x; x < xMax; x++) {
                 var tX = x + (tileWidth / 2);
                 var tY = y + (tileHeight / 2);
+                
+               // console.log("x: " + x + " y: " + y);
                 result.push(new Tile("tile" + tX + "," + tY, tX, tY, tileHeight, tileWidth, !this.isWall(x,y), this));
             }
             
         }
-
+                console.log(result);
         return result;
     },
     
