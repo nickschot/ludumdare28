@@ -84,7 +84,7 @@ var inputKeyObject = {
     "f9": 120,
     "f10": 121,
     //"f11": 122,
-    "f12": 123,
+    //"f12": 123,
     //"num lock": 144,
     "scroll lock": 145,
     "semi-colon": 186,
@@ -103,6 +103,10 @@ var inputKeyObject = {
 var InputManager = new Class({
     initialize: function(){
         this.keysPressed = new Array();
+        this.cursorPosition = {
+            x: 0,
+            y: 0
+        };
         this.setBinds();
     },
     
@@ -118,17 +122,62 @@ var InputManager = new Class({
             }
         });
         $(document).addEvent('keyup', function(e){
-            e.preventDefault();//disables default key actions
             var key = e.code;
-
             var keyUnpress = Object.keyOf(inputKeyObject, key);
             if(keyUnpress){
+                e.preventDefault();//disables default key actions
                 self.keysPressed.erase(keyUnpress);
+            }
+        });
+        
+        $(document).addEvent('mousemove', function(e){
+            //cursor coördinates relative to the window
+            var cursorX = e.event.clientX;
+            var cursorY = e.event.clientY;
+            
+            var elem = $('main-canvas-wrapper').getFirst('canvas');
+            var elemPos = elem.getPosition($(document.body));
+            var elemX = elemPos.x;
+            var elemY = elemPos.y;
+            
+            var scrollPos = $(window).getScroll();
+            var scrollX = scrollPos.x;
+            var scrollY = scrollPos.y;
+            
+            //make elemX and elemY absolute to window instead of document
+            elemX -= scrollX;
+            elemY -= scrollY;
+            
+            var elemSize = elem.getSize();
+            var elemHalfWidth = elemSize.x / 2;
+            var elemHalfHeight = elemSize.y / 2;
+            
+            var centerX = elemX + elemHalfWidth;
+            var centerY = elemY + elemHalfHeight;
+            
+            if(cursorX >= centerX - elemHalfWidth && cursorX <= centerX + elemHalfWidth){
+                self.cursorPosition.x = cursorX - centerX;
+            } else if(cursorX < centerX - elemHalfWidth){
+                self.cursorPosition.x = -elemHalfWidth;
+            } else if(cursorX > centerX + elemHalfWidth){
+                self.cursorPosition.x = elemHalfWidth;
+            }
+            
+            if(cursorY >= centerY - elemHalfHeight && cursorY <= centerY + elemHalfHeight){
+                self.cursorPosition.y = (cursorY - centerY)*-1;
+            } else if(cursorY < centerY - elemHalfHeight){
+                self.cursorPosition.y = elemHalfHeight;
+            } else if(cursorY > centerY + elemHalfHeight){
+                self.cursorPosition.y = -elemHalfHeight;
             }
         });
     },
     
     getKeyPresses: function(){
         return this.keysPressed;
+    },
+    
+    getCursorPosition: function(){
+        return this.cursorPosition;
     }
 });
