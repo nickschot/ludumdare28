@@ -63,8 +63,8 @@ var tileTypes = {
         'y': 1
     },
     '0000ff': {
-        'type': 'water_tile',
-        'wall': true,
+        'type': 'water',
+        'wall': false,
         'spriteSheet': 'lalalal',
         'x': 3,
         'y': 3

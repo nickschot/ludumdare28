@@ -49,7 +49,7 @@ var GameState = new Class({
 
         this.addChunksToScene(this.level);
 
-        this.player = new WizardEntity("wizard", 0, 0, 1.0, 1.0, false, this.level);
+        this.player = new WizardEntity("wizard", 0, 0, 32.0, 32.0, false, this.level);
 
         this.scene.add(this.player.getRenderable());
 
@@ -57,7 +57,6 @@ var GameState = new Class({
 
         this.entitiesOnScene.push(this.player);
 
-        console.log(this.level);
     },
 
     addChunksToScene: function(level) {
@@ -80,7 +79,6 @@ var GameState = new Class({
         plane.applyMatrix(new THREE.Matrix4().makeTranslation(level.getLevelWidth() / 2.0, -1 * level.getLevelHeight() / 2.0, 0.0));
         var mesh = new THREE.Mesh(plane, tileSheet.getMaterial());
 
-        console.log(mesh);
         this.scene.add(mesh);
     },
     // sometimes new entities spawn, add them to the scene

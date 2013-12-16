@@ -16,7 +16,7 @@ function whatHappensIf(action) {
         result = undefined;
     }
     
-    return true;
+    return result;
 }
 
 function ifMove(moveAction) {
@@ -33,28 +33,39 @@ function ifAttackMelee(attackActionMelee) {
 
 function _whatWouldHitRect(action) {
     var result;
-    var evaluationCircle = new Circle(new Point(action.x, action.y), evaluationDistance);
+    var evaluationCircle = new Circle(new Point(action.getX(), action.getY()), evaluationDistance);
     //First calculate which objects their origins lie within evaluationcircle
-    var objectsInEC = action.level.getObjectsOriginInCircle(evaluationCircle);
+    var objectsInEC = action.getLevel().getObjectsOriginInCircle(evaluationCircle);
     
-    var hitboxEvaluationCircle = new Circle(new Point(action.x, action.y), hitboxEvaluationDistance);
+    
+    
+    //Remove yourself
+    objectsInEC = objectsInEC.filter(function(item, index) {
+        var actionId = action.getEntity().getId();
+        var itemId = item.getId();
+        return  actionId !== itemId ;
+    });
+    
+    var hitboxEvaluationCircle = new Circle(new Point(action.getX(), action.getY()), hitboxEvaluationDistance);
     var objectsInHitBoxEC = new Array();
     
+   // console.log(objectsInEC);
     //Second calculate which objects their hitboxes lie within hitboxEvaluationCircle
     for(var i = 0; i < objectsInEC.length; i++) {
-        if(objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
+        if(!objectsInEC[i].isWalkable() && objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
             objectsInHitBoxEC.push(objectsInEC[i]);
         }
     }
     
+   // console.log(objectsInHitBoxEC);
     var bounces = new Array();
     //Third calculate which nearest objects their hitboxes lie within object hitbox
     for(var i = 0; i < objectsInHitBoxEC.length; i++) {
-        if(action.entity.inObjectPlane(objectsInHitBoxEC[i].toPlane())) {
+        if(action.getEntity().inObjectPlane(objectsInHitBoxEC[i].toPlane())) {
             bounces.push(objectsInHitBoxEC[i]);
         }
     }
-    
+
     if(bounces.length === 0) {
         result = new ResultNothing();
     } else {
@@ -66,16 +77,16 @@ function _whatWouldHitRect(action) {
 
 function _whatWouldHitCircle(action) {
     var result;
-    var evaluationCircle = new Circle(new Point(action.x, action.y), evaluationDistance);
+    var evaluationCircle = new Circle(new Point(action.getX(), action.getY()), evaluationDistance);
     //First calculate which objects their origins lie within evaluationcircle
-    var objectsInEC = action.level.getObjectsOriginInCircle(evaluationCircle);
+    var objectsInEC = action.getLevel.getObjectsOriginInCircle(evaluationCircle);
     
-    var hitboxEvaluationCircle = new Circle(new Point(action.x, action.y), action.range);
+    var hitboxEvaluationCircle = new Circle(new Point(action.getX(), action.getY()), action.getRange);
     var bounces = new Array();
     
     //Second calculate which objects their hitboxes lie within hitboxEvaluationCircle
     for(var i = 0; i < objectsInEC.length; i++) {
-        if(objectsInEC[i].isWalkable() && objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
+        if(!objectsInEC[i].isWalkable() && objectsInEC[i].inObjectCircle(hitboxEvaluationCircle)) {
             bounces.push(objectsInEC[i]);
         }
     }

@@ -15,6 +15,7 @@ var ResultBounce = new Class({
     initialize: function(objects) {
         this.parent();
         this.objects = objects;
+        this.isBounce = true;
     }  
 });
 
@@ -22,5 +23,6 @@ var ResultNothing = new Class({
     Extends: Result,
     initialize: function() {
         this.parent();
+        this.isNothing = true;
     }  
 });

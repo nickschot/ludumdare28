@@ -4,10 +4,8 @@ var Entity = new Class({
     Extends: Obj,
     
     initialize: function(id, x, y, height, width, isWalkable, level){
-        this.parent(x, y, height, width, isWalkable);
+        this.parent(x, y, height, width, isWalkable, level);
         this.id = id;
-        this.level = level;
-        console.log("entiteeh");
     },
     
     update: function(){
@@ -39,7 +37,7 @@ var WizardEntity = new Class({
     Extends: Entity,
 
     initialize: function(id, x, y, height, width, isWalkable, level){
-        this.parent(x,y,height,width,isWalkable);
+        this.parent(id, x,y,height,width,isWalkable, level);
         this.inputManager = new InputManager();
 
         var wizardAndCursor = this._createRenderable();
@@ -84,7 +82,7 @@ var WizardEntity = new Class({
         var vector = new THREE.Vector2(pos.x - self.group.position.x, pos.y - self.group.position.y);
 
         vector.normalize();
-
+        
         Array.each(keyPressed, function(key) {
             if(key === 'w'){
                 dirY += 1;
@@ -116,17 +114,30 @@ var WizardEntity = new Class({
             }
         });
 
-        var speedy = this.speed;
-        if(dirX !== 0 && dirY !== 0){
-            speedy = this.speed * Math.sin(0.25 * Math.PI);
+        
+        if(dirX !== 0 || dirY !== 0) {
+            var speedy = this.speed;
+            if(dirX !== 0 && dirY !== 0){
+                speedy = this.speed * Math.sin(0.25 * Math.PI);
+            }
+
+            if(run) speedy = speedy * this.runMultiplier;
+
+            this.currentSpeed = (this.currentSpeed + speedy) / 2.0;
+
+            var newX = this.group.position.x + (dirX * this.currentSpeed);
+            var newY = this.group.position.y + (dirY * this.currentSpeed);
+
+            var moveAction = new ActionMoveHero(newX, newY, this.height, this.width, this, this.level);
+            var resultAction = whatHappensIf(moveAction);
+
+            if(resultAction.isNothing) {
+                this.group.position.x = newX;
+                this.group.position.y = newY;
+
+             }
         }
-
-        if(run) speedy = speedy * this.runMultiplier;
-
-        this.currentSpeed = (this.currentSpeed + speedy) / 2.0;
-
-        this.group.position.x += (dirX * this.currentSpeed);
-        this.group.position.y += (dirY * this.currentSpeed);
+        
 
         var xrot = Math.acos(vector.x);
 
@@ -167,6 +178,58 @@ var WizardEntity = new Class({
     alive: function() {
         return true;
     }
+    /*
+    getId: function() {
+        return this.parent.getId();
+    },
+    
+    getX: function() {
+        return this.parent.getX();
+    },
+    
+    getY: function() {
+        return this.parent.getY();
+    },
+    
+    setX: function(x) {
+        return this.parent.setX(x);
+    },
+    
+    setY: function(y) {
+        return this.parent.setY(y);
+    },
+    
+    getLevel: function() {
+        return this.parent.getLevel();
+    },
+    
+    isWalkable: function() {
+        return this.parent.isWalkable();
+    },
+    
+    getHeight: function() {
+        return this.parent.getHeight();
+    },
+    
+    getWidth: function() {
+        return this.parent.getWidth();
+    },
+    
+    inObjectPlane: function(plane) {
+        return this.parent.inObjectPlane(plane);
+    },
+    
+    inObjectCircle: function(circle) {
+        return this.parent.inObjectCircle(circle);
+    },
+    
+    toTopLeftCorner: function() {
+        return this.parent.toTopLeftCorner();
+    },
+    
+    toPlane: function() {
+        return this.parent.toPlane();
+    }*/
 });
 
 var Projectile = new Class({

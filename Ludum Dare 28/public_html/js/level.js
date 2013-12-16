@@ -42,11 +42,12 @@ var Level = new Class({
     },
 
     update: function() {
-        Array.each(this.entities, function(entity) { entity.update() } );
+        Array.each(this.entities, function(entity) {entity.update(); } );
     },
     
     getObjectsOriginInCircle: function(circle) {
-        var objects = this.getEntities() + this.tilesFromCircle(circle);
+        var objects = new Array();
+        objects.append(this.getEntities()).append(this.tilesFromCircle(circle));
         var result = new Array();
         
         for(var i = 0; i < objects.length; i++) {
@@ -59,31 +60,41 @@ var Level = new Class({
     },
     
     tilesFromCircle: function(circle) {
-        return tileFromRectange(new Plane(
-                    new Point(circle.x - circle.radius, circle.y - circle.radius),
-                    new Point(circle.x + circle.radius, circle.y - circle.radius),
-                    new Point(circle.x + circle.radius, circle.y + circle.radius),
-                    new Point(circle.x - circle.radius, circle.y + circle.radius)
-                ));
+        var rectA = new Plane(
+                    new Point(circle.p.x - circle.radius, circle.p.y - circle.radius),
+                    new Point(circle.p.x + circle.radius, circle.p.y - circle.radius),
+                    new Point(circle.p.x + circle.radius, circle.p.y + circle.radius),
+                    new Point(circle.p.x - circle.radius, circle.p.y + circle.radius)
+                );
+                
+        return this.tilesFromRectangle(rectA);
     },
     
     tilesFromRectangle: function(rect) {
         var result = new Array();
         
-        for(var y = Math.floor(rect.p1.y); y < rect.p3.y; y++) {
-            for(var x = Math.floor(rect.p1.x); x < rect.p2.x; x++) {
+        var x = Math.max(0, Math.floor(rect.p1.x));
+        var y = Math.max(0, Math.floor(rect.p1.y));
+        var xMax = Math.min(this.getLevelWidth(), Math.floor(rect.p3.x));
+        var yMax = Math.min(this.getLevelHeight(), Math.floor(rect.p3.y));
+        
+
+        for(y; y < yMax; y++) {
+            for(x; x < xMax; x++) {
                 var tX = x + (tileWidth / 2);
                 var tY = y + (tileHeight / 2);
-                result.push(new Tile("tile" + tX + "," + tY, tX, tY, tileHeight, tileWidth, !isWall(x,y), this));
+                
+               // console.log("x: " + x + " y: " + y);
+                result.push(new Tile("tile" + tX + "," + tY, tX, tY, tileHeight, tileWidth, !this.isWall(x,y), this));
             }
             
         }
-        
+                console.log(result);
         return result;
     },
     
     isWall: function (x, y) {
-       return this.getLevel[y][x].wall;
+       return (this.getLevel())[y][x].wall;
     },
     
     _getTileType: function(color){

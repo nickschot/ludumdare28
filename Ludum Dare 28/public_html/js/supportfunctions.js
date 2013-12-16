@@ -1,11 +1,5 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-
-
+/*
 function insertSorted(list, toAdd, sortOn) {
     var i = binarySearch(list, toAdd, sortOn);
     var result;
@@ -46,9 +40,6 @@ function binarySearch(list, element, searchOn) {
     var addA = element[searchOn];
     
     while(begin <= end) {
-       /* console.log("begin: " + begin);
-        console.log("i: " + i);
-        console.log("end: " + end);*/
         if(addA === listA) {
             return i;
             
@@ -73,7 +64,7 @@ function binarySearch(list, element, searchOn) {
     }
     return -2;
 }
-
+*/
 function oneNegOtherPos(a, b) {
     var absa = Math.abs(a);
     var absb = Math.abs(b);
