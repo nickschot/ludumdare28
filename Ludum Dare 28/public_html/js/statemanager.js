@@ -49,13 +49,12 @@ var GameState = new Class({
 
         this.addChunksToScene(this.level);
 
-        this.player = new WizardEntity("wizard", 0, 0, 32, 32, false);
+        this.player = new WizardEntity("wizard", 0, 0, 32, 32, false, this.level);
 
         this.scene.add(this.player.getRenderable());
 
         this.level.addEntity(this.player);
 
-        console.log(this.level);
     },
 
     addChunksToScene: function(level) {
@@ -67,9 +66,6 @@ var GameState = new Class({
         for(var y = 0; y < level.length; y++){
             for(var x = 0; x < level[y].length; x++){
                 var tileType = level[y][x];
-
-                console.log(tileType);
-
                 var uv = tileSheet.getUvsFromIndex(tileType.x, tileType.y);
 
                 plane.faceVertexUvs[0].push([uv[1], uv[0], uv[2]]);
@@ -79,7 +75,6 @@ var GameState = new Class({
         }
         var mesh = new THREE.Mesh(plane, tileSheet.getMaterial());
 
-        console.log(mesh);
         this.scene.add(mesh);
     },
     render: function(renderer) {

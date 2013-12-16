@@ -3,6 +3,5 @@ var Tile = new Class({
     
     initialize: function(id, x, y, height, width, isWalkable, level){
         this.parent(id, x, y, height, width, isWalkable, level);
-    }
-
+    },
 });

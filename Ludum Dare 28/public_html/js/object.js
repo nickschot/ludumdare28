@@ -2,24 +2,56 @@
 // x,y is the tile where the entity is in tile units. So 1,1 is 
 
 var Obj = new Class({
-    initialize: function(id, x, y, height, width, isWalkable, level) {
+    initialize: function(id, x, y, height, width, isWalkableV, level) {
         this.id = id;
         this.x = x; // middle
         this.y = y; // middle
         this.height = height;
         this.width = width;
-        this.isWalkable = isWalkable;
+        this.isWalkableV = isWalkableV;
         this.level = level;
+    },
+    
+    getId: function() {
+        return this.id;
+    },
+    
+    getX: function() {
+        return this.x;
+    },
+    
+    setX: function(x) {
+        this.x = x;
+    },
+    
+    getY: function() {
+        return this.y;
+    },
+    
+    setY: function(y) {
+        this.y = y;
+    },
+    
+    getHeight: function() {
+        return this.height;
+    },
+    
+    getWidth: function() {
+        return this.width;
+    },
+    
+    isWalkable: function() {
+        return this.isWalkableV;
     },
     
     inObjectPlane: function(rect2) {
         var rect = this.toPlane();
-        return rect.planeInPlane(rect2);
+        return rect.doesPlaneIntersect(rect2);
     },
     
     inObjectCircle: function(circle) {
         var rect = this.toPlane();
-        return rect.circleInPlane(circle);
+        return circle.doesPlaneIntersect(rect);
     },
     
     toTopLeftCorner: function() {

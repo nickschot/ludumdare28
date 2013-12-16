@@ -28,7 +28,8 @@ var Circle = new Class({
        perpenv.px = this.p.x;
        perpenv.py = this.p.y;
        
-       intersectPoint = perpenv.vectorIntersectionPoint(v);
+
+       var intersectPoint = perpenv.vectorIntersectionPoint(v);
        return intersectPoint.lengthBetweenPoint(this.p) <= this.radius;
    },
    
@@ -61,7 +62,22 @@ var Plane = new Class({
        var intersect23 = t23.vectorIntersectionPoint(v);
        var intersect34 = t34.vectorIntersectionPoint(v);
        
-       return (t23.pointLiesOnVectorBetweenPoints(intersect23, this.p2, this.p3) || t34.pointLiesOnVectorBetweenPoints(intersect34, this.p3, this.p4));
+       var result23 = false;
+       var result34 = false;
+       
+       if(!intersect23) {
+           result23 = this.p1.vectorBetweenPoint(this.p4).pointLiesOnVectorBetweenPoints(p, this.p1, this.p4); //Vector p - p1 is parallel to vectot p2 - p3
+       } else {
+           result23 = t23.pointLiesOnVectorBetweenPoints(intersect23, this.p2, this.p3);
+       }
+       
+       if(!intersect34) {
+           result34 = this.p1.vectorBetweenPoint(this.p2).pointLiesOnVectorBetweenPoints(p, this.p1, this.p2);
+       } else {
+           result34 = t34.pointLiesOnVectorBetweenPoints(intersect34, this.p3, this.p4);
+       }
+
+       return result23 || result34;
    },
    
    
@@ -83,12 +99,12 @@ var Plane = new Class({
     
     //Returns the vectors between the points of a plane in a list
     //Goes from point 1 to point 2 to point 3 to point 4 to point 1
-    planeToVectors: function (r) {
+    planeToVectors: function () {
         var result = new Array();
-        result.push(vectorBetweenPoints(r.p1, r.p2));
-        result.push(vectorBetweenPoints(r.p2, r.p3));
-        result.push(vectorBetweenPoints(r.p3, r.p4));
-        result.push(vectorBetweenPoints(r.p4, r.p1));
+        result.push(this.p1.vectorBetweenPoint(this.p2));
+        result.push(this.p2.vectorBetweenPoint(this.p3));
+        result.push(this.p3.vectorBetweenPoint(this.p4));
+        result.push(this.p4.vectorBetweenPoint(this.p1));
         return result;
     }
 });
@@ -146,16 +162,12 @@ var Vector = new Class({
 
         var cy = (this.py - v2.py);
         var cx = (this.px - v2.px);
-
+        
         var t1top    = v2.dy * cx - v2.dx * cy;
-        var t1bottom = this.dx * v2.dx - v2.dy * this.dx;
+        var t1bottom = this.dy * v2.dx - v2.dy * this.dx;
 
-        var t2top    = this.dx * cy - this.dy * cx;
-        var t2bottom = v2.dy * this.dx - this.dy * v2.dx;
-
-        if(t1bottom !== 0 && t2bottom !== 0) {
+        if(t1bottom !== 0) {
             var t1 = t1top / t1bottom;
-            var t2 = t2top / t2bottom;
             result = new Point(this.dx * t1 + this.px, this.dy * t1 + this.dy);
         }
 
